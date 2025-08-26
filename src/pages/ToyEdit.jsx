@@ -115,8 +115,6 @@ export function ToyEdit() {
                         name="price"
                         value={toyToEdit.price || ''}
                         {...priceValidations}
-                        // min="1"
-                        // required
                         onChange={handleChange}
                     />
                 </div>
@@ -139,21 +137,20 @@ export function ToyEdit() {
                 </div>
 
                 {toyToEdit._id && (
-                    <div className="form-group">
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="inStock"
-                                checked={toyToEdit.inStock}
-                                onChange={handleChange}
-                            />
-                            In Stock
-                        </label>
+                    <div className="checkbox-group">
+                        <input
+                            type="checkbox"
+                            id="inStock"
+                            name="inStock"
+                            checked={toyToEdit.inStock}
+                            onChange={handleChange}
+                        />
+                        <label htmlFor="inStock">In Stock</label>
                     </div>
                 )}
 
-                <button>
-                    {toyToEdit._id ? 'Update Toy' : 'Add'}
+                <button type="submit" className="btn-save">
+                    {toyToEdit._id ? 'Update Toy' : 'Add Toy'}
                 </button>
             </form>
         </section>
