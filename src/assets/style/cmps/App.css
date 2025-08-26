@@ -1,0 +1,56 @@
+/* App styles */
+.App {
+  min-height: 100vh;
+  background-color: var(--clr1bg);
+  color: var(--gray3);
+}
+
+/* Online status styles */
+.online-status {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  z-index: 1000;
+}
+
+.online-status.online {
+  background-color: var(--clr2);
+  color: white;
+}
+
+.online-status.offline {
+  background-color: var(--clr1);
+  color: white;
+}
+
+/* Main content */
+main {
+  padding: 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* App navigation styles */
+.app-navigation {
+  margin: 2rem 0;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+/* Accordion section styles */
+.accordion-section {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.accordion-section h2 {
+  color: var(--clr1);
+  margin-bottom: 1.5rem;
+}
