@@ -1,0 +1,124 @@
+.accordion-container {
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.accordion-item {
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, var(--clr1) 0%, var(--clr2) 100%);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.accordion-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.accordion-header {
+  width: 100%;
+  padding: 1.5rem;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.accordion-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.accordion-header:hover::before {
+  left: 100%;
+}
+
+.accordion-header.open {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.accordion-title {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.accordion-icon {
+  font-size: 1.5rem;
+  font-weight: bold;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  text-shadow: none;
+}
+
+.accordion-header:hover .accordion-icon {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.accordion-header.open .accordion-icon {
+  background: rgba(255, 255, 255, 0.4);
+  transform: rotate(180deg);
+}
+
+.accordion-content-wrapper {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.accordion-content {
+  padding: 1.5rem;
+  color: var(--gray3);
+  line-height: 1.6;
+  font-size: 1rem;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .accordion-container {
+    margin: 0 1rem;
+  }
+  
+  .accordion-header {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+  
+  .accordion-content {
+    padding: 1rem;
+  }
+}

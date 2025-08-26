@@ -1,0 +1,20 @@
+/* Helper classes */
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
