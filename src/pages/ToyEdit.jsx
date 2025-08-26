@@ -4,14 +4,22 @@ import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { toyService } from '../services/toy.service'
 import { loadToyLabels, saveToy } from '../store/actions/toy.actions'
 import { useSelector } from 'react-redux'
+import { useConfirmTabClose } from '../hooks/useConfirmTabClose'
 
 export function ToyEdit() {
     const [toyToEdit, setToyToEdit] = useState(toyService.getEmptyToy())
+    const [originalToy, setOriginalToy] = useState(null)
     
     const labels = useSelector(storeState=>storeState.toyModule.toyLabels)
 
     const { toyId } = useParams()
     const navigate = useNavigate()
+
+    // Check if there are unsaved changes
+    const hasUnsavedChanges = originalToy && JSON.stringify(toyToEdit) !== JSON.stringify(originalToy)
+    
+    // Use the custom hook to warn about unsaved changes
+    useConfirmTabClose(hasUnsavedChanges)
 
     useEffect(() => {
         loadToy()
@@ -21,7 +29,10 @@ export function ToyEdit() {
     function loadToy() {
         if (!toyId) return
         toyService.getById(toyId)
-            .then(setToyToEdit)
+            .then(toy => {
+                setToyToEdit(toy)
+                setOriginalToy(toy) // Store original for comparison
+            })
             .catch(err => {
                 console.log('Had issues in toy edit:', err)
                 navigate('/toy')
@@ -78,6 +89,11 @@ export function ToyEdit() {
     return (
         <section className="toy-edit">
             <h2>{toyToEdit._id ? 'Edit' : 'Add'} Toy</h2>
+            {hasUnsavedChanges && (
+                <div className="unsaved-changes-warning">
+                    ⚠️ You have unsaved changes
+                </div>
+            )}
             <form onSubmit={onSaveToy}>
                 <div className="form-group">
                     <label htmlFor="name">Name:</label>
