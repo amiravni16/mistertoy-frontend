@@ -1,16 +1,47 @@
 .toy-dashboard {
-  padding: 2rem 0;
+  padding: 4rem 2rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .toy-dashboard h2 {
   color: var(--clr1);
   text-align: center;
   margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--clr1), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .dashboard-content {
   background: var(--clr1bg-light);
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--gray1);
+}
+
+.dashboard-content p {
+  font-size: 1.1rem;
+  color: var(--gray3);
+  margin-bottom: 1rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .toy-dashboard {
+    padding: 2rem 1rem;
+  }
+  
+  .toy-dashboard h2 {
+    font-size: 2rem;
+  }
+  
+  .dashboard-content {
+    padding: 1.5rem;
+  }
 }

@@ -3,6 +3,7 @@
   min-height: 100vh;
   background-color: var(--clr1bg);
   color: var(--gray3);
+  width: 100%;
 }
 
 /* Online status styles */
@@ -26,12 +27,12 @@
   color: white;
 }
 
-/* Main content */
+/* Main content - Full width */
 main {
-  padding: 2rem;
-  max-width: 1280px;
-  margin: 0 auto;
-  text-align: center;
+  width: 100%;
+  min-height: calc(100vh - 200px);
+  padding: 0;
+  margin: 0;
 }
 
 /* App navigation styles */
