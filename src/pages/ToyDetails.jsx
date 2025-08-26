@@ -4,7 +4,7 @@ import { Loader } from '../cmps/Loader'
 import { showErrorMsg } from '../services/event-bus.service'
 import { toyService } from '../services/toy.service'
 import { Chat } from '../cmps/Chat'
-import { PopUp } from '../cmps/PopUp'
+import { NicePopup } from '../cmps/NicePopup'
 
 export function ToyDetails() {
     const [toy, setToy] = useState(null)
@@ -50,16 +50,20 @@ export function ToyDetails() {
                 <Link to="/toy">Back</Link>
             </button>
             <section>
-                <PopUp
+                <NicePopup
                     header={<h3>Chat About {toy.name}s</h3>}
                     footer={<h4>&copy; 2025-9999 Toys INC.</h4>}
                     onClose={() => setIsChatOpen(false)}
                     isOpen={isChatOpen}
                 >
                     <Chat />
-                </PopUp>
+                </NicePopup>
             </section >
-            {!isChatOpen && <button onClick={() => setIsChatOpen(true)} className='open-chat'>Chat</button>}
+            {!isChatOpen && (
+                <button onClick={() => setIsChatOpen(true)} className='open-chat'>
+                    💬 Chat
+                </button>
+            )}
         </section >
     )
 }
