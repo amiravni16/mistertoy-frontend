@@ -17,6 +17,8 @@
 @import 'cmps/common/Loader.css';
 @import 'cmps/PopUp.css';
 @import 'cmps/Accordion.css';
+@import 'cmps/ToyPreview.css';
+@import 'cmps/ToyList.css';
 
 /* Pages */
 @import 'cmps/HomePage.css';

@@ -1,13 +1,38 @@
 :root {
-  --clr1: #ff6b6b;
-  --clr2: #52b69a;
+  /* Primary Colors - Modern & Vibrant */
+  --clr1: #6366f1;          /* Modern Indigo */
+  --clr2: #10b981;          /* Modern Emerald */
+  --clr3: #f59e0b;          /* Modern Amber */
+  --clr4: #ef4444;          /* Modern Red */
 
-  --clr1bg: #f2f3f7;
-  --clr1bg-light: #ffffff;
-  --clr2bg: #ffd56b;
-  --clr2bg-light: #f9f3e3;
+  /* Background Colors - Clean & Modern */
+  --clr1bg: #f8fafc;        /* Light Gray */
+  --clr1bg-light: #ffffff;  /* Pure White */
+  --clr2bg: #ecfdf5;        /* Light Green */
+  --clr2bg-light: #f0fdf4;  /* Lighter Green */
 
-  --gray1: rgb(240, 240, 240);
-  --gray2: rgb(155, 155, 155);
-  --gray3: rgb(44, 44, 44);
+  /* Neutral Colors - Professional */
+  --gray1: #f1f5f9;         /* Very Light Gray */
+  --gray2: #94a3b8;         /* Medium Gray */
+  --gray3: #334155;          /* Dark Gray */
+  --gray4: #1e293b;          /* Very Dark Gray */
+
+  /* Accent Colors */
+  --accent-blue: #3b82f6;    /* Blue */
+  --accent-purple: #8b5cf6;  /* Purple */
+  --accent-pink: #ec4899;    /* Pink */
+  --accent-orange: #f97316;  /* Orange */
+
+  /* Shadows & Effects */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
 }
