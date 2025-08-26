@@ -13,12 +13,20 @@ export function ToyPreview({ toy }) {
         return `https://robohash.org/${toy.name}?set=set4`
     }
 
+    // Ensure we always have a valid image URL
+    const getImageSrc = () => {
+        if (imageError || !toy.imgUrl || toy.imgUrl.trim() === '') {
+            return getFallbackImage()
+        }
+        return toy.imgUrl
+    }
+
     return (
         <article className="toy-preview">
             <div className="toy-image-container">
                 <img 
-                    src={imageError ? getFallbackImage() : toy.imgUrl} 
-                    alt={toy.name}
+                    src={getImageSrc()}
+                    alt={toy.name || 'Toy'}
                     onError={handleImageError}
                     className="toy-image"
                 />
@@ -38,15 +46,15 @@ export function ToyPreview({ toy }) {
             </div>
             
             <div className="toy-info">
-                <h3 className="toy-name">{toy.name}</h3>
-                <div className="toy-price">${toy.price}</div>
+                <h3 className="toy-name">{toy.name || 'Unnamed Toy'}</h3>
+                <div className="toy-price">${toy.price || 0}</div>
                 <div className="toy-labels">
-                    {toy.labels.slice(0, 3).map((label, index) => (
+                    {(toy.labels || []).slice(0, 3).map((label, index) => (
                         <span key={index} className="toy-label">
                             {label}
                         </span>
                     ))}
-                    {toy.labels.length > 3 && (
+                    {toy.labels && toy.labels.length > 3 && (
                         <span className="toy-label more">+{toy.labels.length - 3}</span>
                     )}
                 </div>
