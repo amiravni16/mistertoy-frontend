@@ -4,10 +4,24 @@
   text-align: center;
   border-top: 1px solid var(--gray1);
   margin-top: auto;
+  width: 100%;
+}
+
+.app-footer .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
 .app-footer p {
   margin: 0;
   color: var(--gray2);
   font-size: 0.9rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .app-footer .container {
+    padding: 0 1rem;
+  }
 }
