@@ -5,7 +5,9 @@ export function AppFooter() {
 
     return (
         <section className="app-footer">
-            <p>Coffeerights to all ({toysLength} toys in the app)</p>
+            <div className="container">
+                <p>Coffeerights to all ({toysLength} toys in the app)</p>
+            </div>
         </section>
     )
 }
