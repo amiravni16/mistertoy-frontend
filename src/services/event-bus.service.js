@@ -11,9 +11,9 @@ export const eventBus = {
 }
 
 export function showErrorMsg(txt) {
-    eventBus.emit('show-msg', { txt, type: 'error' })
+    eventBus.emit('show-user-msg', { txt, type: 'error' })
 }
 
 export function showSuccessMsg(txt) {
-    eventBus.emit('show-msg', { txt, type: 'success' })
+    eventBus.emit('show-user-msg', { txt, type: 'success' })
 }
