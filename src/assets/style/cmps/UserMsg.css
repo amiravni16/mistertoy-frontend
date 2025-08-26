@@ -1,0 +1,37 @@
+.user-msg {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 300px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.user-msg.success {
+  background-color: var(--clr2);
+}
+
+.user-msg.error {
+  background-color: var(--clr1);
+}
+
+.user-msg button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: auto;
+}
+
+.user-msg button:hover {
+  opacity: 0.8;
+}

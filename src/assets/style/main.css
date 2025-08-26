@@ -11,8 +11,16 @@
 
 /* Components */
 @import 'cmps/App.css';
+@import 'cmps/AppHeader.css';
+@import 'cmps/AppFooter.css';
+@import 'cmps/UserMsg.css';
 @import 'cmps/common/Loader.css';
 @import 'cmps/PopUp.css';
 @import 'cmps/Accordion.css';
+
+/* Pages */
+@import 'cmps/HomePage.css';
+@import 'cmps/AboutUS.css';
+@import 'cmps/ToyDashboard.css';
 
 /* MEDIA QUERIES */

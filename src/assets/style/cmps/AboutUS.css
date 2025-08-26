@@ -1,0 +1,16 @@
+.about-us {
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.about-us h2 {
+  color: var(--clr1);
+  margin-bottom: 1.5rem;
+}
+
+.about-us p {
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+  color: var(--gray3);
+}

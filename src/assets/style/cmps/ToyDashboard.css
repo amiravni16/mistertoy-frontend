@@ -1,0 +1,16 @@
+.toy-dashboard {
+  padding: 2rem 0;
+}
+
+.toy-dashboard h2 {
+  color: var(--clr1);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.dashboard-content {
+  background: var(--clr1bg-light);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
