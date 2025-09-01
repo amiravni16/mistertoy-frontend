@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { authService } from '../services/auth.service.js'
 import { useState, useEffect } from 'react'
+import '../assets/style/cmps/AppHeader.css'
 
 export function AppHeader() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
