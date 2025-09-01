@@ -1,6 +1,9 @@
-import { storageService } from './async-storage.service'
+import axios from 'axios'
+import { authService } from './auth.service.js'
 
-const TOY_DB = 'toyDB'
+const BASE_URL = '/api/toy'
+
+
 
 const labels = [
     'On wheels',
@@ -12,8 +15,6 @@ const labels = [
     'Outdoor',
     'Battery Powered',
 ]
-
-_createToys()
 
 export const toyService = {
     query,
@@ -29,58 +30,147 @@ export const toyService = {
 }
 
 function query(filterBy = {}, sortBy = {}) {
-    return storageService.query(TOY_DB).then(toys => {
-        let toysToShow = toys
-
-        //* Filter by text
-        if (filterBy.txt) {
-            const regExp = new RegExp(filterBy.txt, 'i')
-            toysToShow = toysToShow.filter(toy => regExp.test(toy.name))
-        }
-
-        //* Filter by inStock
-        if (typeof filterBy.inStock === 'boolean') {
-            toysToShow = toysToShow.filter(toy => toy.inStock === filterBy.inStock)
-        }
-
-        //* Filter by labels
-        if (filterBy.labels?.length) {
-            toysToShow = toysToShow.filter(toy =>
-                filterBy.labels.every(label => toy.labels.includes(label))
-            )
-        }
-
-        //* Sort
-        if (sortBy.type) {
-            const dir = +sortBy.desc
-            toysToShow.sort((a, b) => {
-                if (sortBy.type === 'name') {
-                    return a.name.localeCompare(b.name) * dir
-                } else if (sortBy.type === 'price' || sortBy.type === 'createdAt') {
-                    return (a[sortBy.type] - b[sortBy.type]) * dir
-                }
-            })
-        }
-
-        return toysToShow
-    })
+    // Build query parameters for backend
+    const params = new URLSearchParams()
+    
+    if (filterBy.txt) params.append('txt', filterBy.txt)
+    if (filterBy.minPrice) params.append('minPrice', filterBy.minPrice)
+    if (filterBy.maxPrice) params.append('maxPrice', filterBy.maxPrice)
+    if (filterBy.category) params.append('category', filterBy.category)
+    if (typeof filterBy.inStock === 'boolean') params.append('inStock', filterBy.inStock)
+    if (filterBy.pageIdx !== undefined) params.append('pageIdx', filterBy.pageIdx)
+    
+    return axios.get(`${BASE_URL}?${params.toString()}`)
+        .then(res => {
+            let toysToShow = res.data.map(backendToy => ({
+                _id: backendToy._id,
+                name: backendToy.name,
+                price: backendToy.price,
+                labels: backendToy.category ? backendToy.category.split(', ').filter(Boolean) : [],
+                imgUrl: backendToy.imageUrl || `https://robohash.org/${backendToy.name}?set=set4`,
+                createdAt: new Date(backendToy.createdAt).getTime(),
+                inStock: backendToy.inStock,
+                description: backendToy.description,
+                ageRange: backendToy.ageRange
+            }))
+            
+            //* Filter by labels (backend doesn't support this yet, so we filter client-side)
+            if (filterBy.labels?.length) {
+                toysToShow = toysToShow.filter(toy =>
+                    filterBy.labels.every(label => toy.labels?.includes(label))
+                )
+            }
+            
+            //* Sort (backend doesn't support this yet, so we sort client-side)
+            if (sortBy.type) {
+                const dir = +sortBy.desc
+                toysToShow.sort((a, b) => {
+                    if (sortBy.type === 'name') {
+                        return a.name.localeCompare(b.name) * dir
+                    } else if (sortBy.type === 'price' || sortBy.type === 'createdAt') {
+                        return (a[sortBy.type] - b[sortBy.type]) * dir
+                    }
+                })
+            }
+            
+            return toysToShow
+        })
+        .catch(err => {
+            console.error('Error fetching toys:', err)
+            throw err
+        })
 }
 
 function getById(toyId) {
-    return storageService.get(TOY_DB, toyId)
+    return axios.get(`${BASE_URL}/${toyId}`)
+        .then(res => {
+            const backendToy = res.data
+            return {
+                _id: backendToy._id,
+                name: backendToy.name,
+                price: backendToy.price,
+                labels: backendToy.category ? backendToy.category.split(', ').filter(Boolean) : [],
+                imgUrl: backendToy.imageUrl || `https://robohash.org/${backendToy.name}?set=set4`,
+                createdAt: new Date(backendToy.createdAt).getTime(),
+                inStock: backendToy.inStock,
+                description: backendToy.description,
+                ageRange: backendToy.ageRange
+            }
+        })
+        .catch(err => {
+            console.error('Error fetching toy:', err)
+            throw err
+        })
 }
 
 function remove(toyId) {
-    return storageService.remove(TOY_DB, toyId)
+    return axios.delete(`${BASE_URL}/${toyId}`)
+        .then(() => toyId)
+        .catch(err => {
+            console.error('Error removing toy:', err)
+            throw err
+        })
 }
 
 function save(toy) {
     if (toy._id) {
-        return storageService.put(TOY_DB, toy)
+        // Update existing toy
+        return axios.put(`${BASE_URL}/${toy._id}`, {
+            name: toy.name,
+            category: toy.labels?.join(', ') || '',
+            price: toy.price,
+            description: toy.description || '',
+            ageRange: toy.ageRange || '',
+            imageUrl: toy.imgUrl || '',
+            inStock: toy.inStock
+        })
+        .then(res => {
+            const backendToy = res.data
+            return {
+                _id: backendToy._id,
+                name: backendToy.name,
+                price: backendToy.price,
+                labels: backendToy.category ? backendToy.category.split(', ').filter(Boolean) : [],
+                imgUrl: backendToy.imageUrl || `https://robohash.org/${backendToy.name}?set=set4`,
+                createdAt: new Date(backendToy.createdAt).getTime(),
+                inStock: backendToy.inStock,
+                description: backendToy.description,
+                ageRange: backendToy.ageRange
+            }
+        })
+        .catch(err => {
+            console.error('Error updating toy:', err)
+            throw err
+        })
     } else {
-        toy.createdAt = Date.now()
-        toy.inStock = true
-        return storageService.post(TOY_DB, toy)
+        // Add new toy
+        return axios.post(BASE_URL, {
+            name: toy.name,
+            category: toy.labels?.join(', ') || '',
+            price: toy.price,
+            description: toy.description || '',
+            ageRange: toy.ageRange || '',
+            imageUrl: toy.imgUrl || '',
+            inStock: toy.inStock
+        })
+        .then(res => {
+            const backendToy = res.data
+            return {
+                _id: backendToy._id,
+                name: backendToy.name,
+                price: backendToy.price,
+                labels: backendToy.category ? backendToy.category.split(', ').filter(Boolean) : [],
+                imgUrl: backendToy.imageUrl || `https://robohash.org/${backendToy.name}?set=set4`,
+                createdAt: new Date(backendToy.createdAt).getTime(),
+                inStock: backendToy.inStock,
+                description: backendToy.description,
+                ageRange: backendToy.ageRange
+            }
+        })
+        .catch(err => {
+            console.error('Error adding toy:', err)
+            throw err
+        })
     }
 }
 
@@ -116,7 +206,7 @@ function getToyLabelCounts() {
     return query().then(toys => {
         const labelCounts = {}
         labels.forEach(label => {
-            labelCounts[label] = toys.filter(toy => toy.labels.includes(label)).length
+            labelCounts[label] = toys.filter(toy => toy.labels?.includes(label)).length
         })
         return labelCounts
     })
@@ -128,67 +218,4 @@ function getInStockValue() {
         const totalCount = toys.length
         return { inStockCount, totalCount }
     })
-}
-
-function _createToys() {
-    let toys = JSON.parse(localStorage.getItem(TOY_DB) || 'null')
-    if (!toys || !toys.length) {
-        toys = [
-            {
-                _id: 't101',
-                name: 'Talking Doll',
-                imgUrl: `https://robohash.org/Talking Doll?set=set4`,
-                price: 123,
-                labels: ['Doll', 'Battery Powered', 'Baby'],
-                createdAt: 1631031801011,
-                inStock: true,
-            },
-            {
-                _id: 't102',
-                name: 'Remote Control Car',
-                imgUrl: `https://robohash.org/Remote Control Car?set=set4`,
-                price: 156,
-                labels: ['On wheels', 'Battery Powered', 'Outdoor'],
-                createdAt: 1631031801012,
-                inStock: true,
-            },
-            {
-                _id: 't103',
-                name: 'Art & Craft Set',
-                imgUrl: `https://robohash.org/Art Craft Set?set=set4`,
-                price: 67,
-                labels: ['Art', 'Box game'],
-                createdAt: 1631031801013,
-                inStock: false,
-            },
-            {
-                _id: 't104',
-                name: 'Wooden Puzzle',
-                imgUrl: `https://robohash.org/Wooden Puzzle?set=set4`,
-                price: 45,
-                labels: ['Puzzle', 'Box game'],
-                createdAt: 1631031801014,
-                inStock: true,
-            },
-            {
-                _id: 't105',
-                name: 'Building Blocks',
-                imgUrl: `https://robohash.org/Building Blocks?set=set4`,
-                price: 78,
-                labels: ['Box game', 'Art'],
-                createdAt: 1631031801015,
-                inStock: true,
-            },
-            {
-                _id: 't106',
-                name: 'Plush Rabbit',
-                imgUrl: `https://robohash.org/Plush Rabbit?set=set4`,
-                price: 34,
-                labels: ['Baby', 'Doll'],
-                createdAt: 1631031801016,
-                inStock: false,
-            }
-        ]
-        localStorage.setItem(TOY_DB, JSON.stringify(toys))
-    }
 }
