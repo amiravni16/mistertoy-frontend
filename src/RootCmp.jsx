@@ -11,6 +11,8 @@ import { ToyDetails } from './pages/ToyDetails'
 import { ToyEdit } from './pages/ToyEdit'
 import { ToyIndex } from './pages/ToyIndex'
 import { LoginPage } from './pages/LoginPage'
+import { SignupPage } from './pages/SignupPage'
+import { ProfilePage } from './pages/ProfilePage'
 import { store } from './store/store'
 import { HomePage } from './pages/HomePage'
 import { useEffect } from 'react'
@@ -33,6 +35,8 @@ export function App() {
                             <Route element={<AboutUs />} path="/about" />
                             <Route element={<ToyDashboard />} path="/dashboard" />
                             <Route element={<LoginPage />} path="/login" />
+                            <Route element={<SignupPage />} path="/signup" />
+                            <Route element={<ProfilePage />} path="/profile" />
                             <Route element={<ToyIndex />} path="/toy" />
                             <Route element={<ToyEdit />} path="/toy/edit/:toyId?" />
                             <Route element={<ToyDetails />} path="/toy/:toyId" />
