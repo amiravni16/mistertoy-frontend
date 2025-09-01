@@ -10,6 +10,7 @@ import { ToyDashboard } from './pages/ToyDashboard'
 import { ToyDetails } from './pages/ToyDetails'
 import { ToyEdit } from './pages/ToyEdit'
 import { ToyIndex } from './pages/ToyIndex'
+import { LoginPage } from './pages/LoginPage'
 import { store } from './store/store'
 import { HomePage } from './pages/HomePage'
 import { useEffect } from 'react'
@@ -31,6 +32,7 @@ export function App() {
                             <Route element={<HomePage />} path="/" />
                             <Route element={<AboutUs />} path="/about" />
                             <Route element={<ToyDashboard />} path="/dashboard" />
+                            <Route element={<LoginPage />} path="/login" />
                             <Route element={<ToyIndex />} path="/toy" />
                             <Route element={<ToyEdit />} path="/toy/edit/:toyId?" />
                             <Route element={<ToyDetails />} path="/toy/:toyId" />
