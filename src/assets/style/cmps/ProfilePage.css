@@ -184,20 +184,7 @@
     flex: 1;
 }
 
-/* Header logout button styles */
-.btn-logout-header {
-    background: none;
-    border: none;
-    color: #dc3545;
-    cursor: pointer;
-    font-size: 0.9rem;
-    padding: 0;
-    text-decoration: underline;
-}
 
-.btn-logout-header:hover {
-    color: #c82333;
-}
 
 .user-info {
     color: #28a745;
