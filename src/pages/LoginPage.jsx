@@ -20,7 +20,7 @@ export function LoginPage() {
         
         try {
             await authService.login(credentials)
-            navigate('/toy')
+            navigate('/profile')
         } catch (err) {
             setError('Login failed. Please check your credentials.')
         } finally {
@@ -70,6 +70,15 @@ export function LoginPage() {
                     <p>For testing, you can use:</p>
                     <p><strong>Username:</strong> admin</p>
                     <p><strong>Password:</strong> admin</p>
+                    <p className="signup-link">
+                        Don't have an account? <button 
+                            type="button" 
+                            className="btn-signup-link"
+                            onClick={() => navigate('/signup')}
+                        >
+                            Sign up here
+                        </button>
+                    </p>
                 </div>
             </div>
         </section>
