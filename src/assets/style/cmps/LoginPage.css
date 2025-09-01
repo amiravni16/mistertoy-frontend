@@ -1,0 +1,125 @@
+.login-page {
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  background: var(--clr1bg-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.login-container {
+  padding: 2rem;
+}
+
+.login-page h2 {
+  color: var(--gray4);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--clr1), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--gray4);
+  font-size: 1rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid var(--gray1);
+  border-radius: var(--radius-lg);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--clr1);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--clr1), var(--accent-purple));
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-login:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-login:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-login:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background: var(--clr3);
+  color: white;
+  padding: 1rem;
+  border-radius: var(--radius-lg);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+.login-info {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--clr1);
+}
+
+.login-info p {
+  margin: 0.5rem 0;
+  color: var(--gray3);
+  font-size: 0.9rem;
+}
+
+.login-info strong {
+  color: var(--clr1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .login-page {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .login-page h2 {
+    font-size: 1.5rem;
+  }
+}
+
