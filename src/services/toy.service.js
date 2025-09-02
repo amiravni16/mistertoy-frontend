@@ -46,7 +46,7 @@ function query(filterBy = {}, sortBy = {}) {
                 _id: backendToy._id,
                 name: backendToy.name,
                 price: backendToy.price,
-                labels: backendToy.category ? [backendToy.category] : [],
+                labels: backendToy.category ? backendToy.category.split(', ').filter(Boolean) : [],
                 imgUrl: backendToy.imageUrl || `https://robohash.org/${backendToy.name}?set=set4`,
                 createdAt: new Date(backendToy.createdAt).getTime(),
                 inStock: backendToy.inStock,
@@ -177,6 +177,8 @@ function save(toy) {
 function getDefaultFilter() {
     return {
         txt: '',
+        minPrice: '',
+        maxPrice: '',
         inStock: '',
         labels: [],
         pageIdx: 0,
@@ -188,7 +190,39 @@ function getDefaultSort() {
 }
 
 function getToyLabels() {
-    return Promise.resolve(labels)
+    // First try to get labels from existing toys in the database
+    return query({ pageIdx: 0, pageSize: 1000 }) // Get all toys to extract unique labels
+        .then(result => {
+            console.log('Raw toys data from backend:', result)
+            const allLabels = new Set()
+            
+            // Add predefined labels
+            labels.forEach(label => allLabels.add(label))
+            console.log('Predefined labels:', labels)
+            
+            // Extract labels from existing toys
+            if (result && result.length > 0) {
+                console.log('Processing', result.length, 'toys for labels')
+                result.forEach(toy => {
+                    console.log('Toy:', toy.name, 'has labels:', toy.labels)
+                    if (toy.labels && Array.isArray(toy.labels)) {
+                        toy.labels.forEach(label => {
+                            if (label && label.trim()) {
+                                allLabels.add(label.trim())
+                            }
+                        })
+                    }
+                })
+            }
+            
+            const finalLabels = Array.from(allLabels).sort()
+            console.log('Final labels for filter:', finalLabels)
+            return finalLabels
+        })
+        .catch(err => {
+            console.log('Error getting labels from toys, using default labels:', err)
+            return labels // Fallback to predefined labels
+        })
 }
 
 function getEmptyToy() {

@@ -68,6 +68,7 @@ export function saveToy(toy) {
 export function loadToyLabels() {
     return toyService.getToyLabels()
         .then(labels => {
+            console.log('Loaded toy labels:', labels)
             store.dispatch({ type: SET_TOY_LABELS, labels })
         })
         .catch(err => {
