@@ -1,23 +1,11 @@
 import { useState, useEffect } from 'react'
-import { 
-    BarChart, 
-    Bar, 
-    XAxis, 
-    YAxis, 
-    CartesianGrid, 
-    Tooltip, 
-    Legend, 
-    ResponsiveContainer,
-    PieChart,
-    Pie,
-    Cell,
-    LineChart,
-    Line,
-    Area,
-    AreaChart
-} from 'recharts'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, LineElement, PointElement } from 'chart.js'
+import { Pie, Bar, Line } from 'react-chartjs-2'
 import { toyService } from '../services/toy.service.js'
 import '../assets/style/cmps/ToyDashboard.css'
+
+// Register Chart.js components
+ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, LineElement, PointElement)
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFC658', '#FF6B6B']
 
@@ -43,7 +31,7 @@ export function ToyDashboard() {
         }
     }
 
-    // Process data for charts
+    // Process data for charts (Chart.js format)
     const getPricesPerLabel = () => {
         const labelData = {}
         
@@ -51,10 +39,8 @@ export function ToyDashboard() {
             toy.labels?.forEach(label => {
                 if (!labelData[label]) {
                     labelData[label] = {
-                        label,
                         totalPrice: 0,
-                        count: 0,
-                        avgPrice: 0
+                        count: 0
                     }
                 }
                 labelData[label].totalPrice += toy.price
@@ -62,12 +48,21 @@ export function ToyDashboard() {
             })
         })
 
-        // Calculate average prices
-        Object.values(labelData).forEach(item => {
-            item.avgPrice = Math.round((item.totalPrice / item.count) * 100) / 100
-        })
+        const labels = Object.keys(labelData)
+        const data = labels.map(label => 
+            Math.round((labelData[label].totalPrice / labelData[label].count) * 100) / 100
+        )
 
-        return Object.values(labelData).sort((a, b) => b.avgPrice - a.avgPrice)
+        return {
+            labels,
+            datasets: [{
+                label: 'Average Price ($)',
+                data,
+                backgroundColor: COLORS.slice(0, labels.length),
+                borderColor: COLORS.slice(0, labels.length),
+                borderWidth: 1
+            }]
+        }
     }
 
     const getInventoryByLabel = () => {
@@ -92,39 +87,70 @@ export function ToyDashboard() {
             })
         })
 
-        return Object.values(labelData).map(item => ({
-            name: item.label,
-            value: item.inStock,
-            outOfStock: item.outOfStock,
-            total: item.total,
-            percentage: Math.round((item.inStock / item.total) * 100)
-        }))
+        const labels = Object.keys(labelData)
+        const inStockData = labels.map(label => labelData[label].inStock)
+        const outOfStockData = labels.map(label => labelData[label].outOfStock)
+
+        return {
+            labels,
+            datasets: [{
+                label: 'In Stock',
+                data: inStockData,
+                backgroundColor: '#00C49F',
+                borderColor: '#00C49F',
+                borderWidth: 1
+            }, {
+                label: 'Out of Stock',
+                data: outOfStockData,
+                backgroundColor: '#FF8042',
+                borderColor: '#FF8042',
+                borderWidth: 1
+            }]
+        }
     }
 
-    // Generate random data for line chart (sales over time)
+    // Generate random data for line chart (sales over time) - Chart.js format
     const getSalesData = () => {
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        const currentYear = new Date().getFullYear()
         
-        return months.map((month, index) => ({
-            month,
-            year: currentYear,
-            sales: Math.floor(Math.random() * 1000) + 200,
-            revenue: Math.floor(Math.random() * 5000) + 1000,
-            toysSold: Math.floor(Math.random() * 50) + 10
-        }))
+        return {
+            labels: months,
+            datasets: [{
+                label: 'Sales',
+                data: months.map(() => Math.floor(Math.random() * 1000) + 200),
+                borderColor: '#0088FE',
+                backgroundColor: 'rgba(0, 136, 254, 0.1)',
+                tension: 0.4
+            }, {
+                label: 'Revenue ($)',
+                data: months.map(() => Math.floor(Math.random() * 5000) + 1000),
+                borderColor: '#00C49F',
+                backgroundColor: 'rgba(0, 196, 159, 0.1)',
+                tension: 0.4
+            }]
+        }
     }
 
-    // Generate random data for area chart (inventory levels over time)
+    // Generate random data for line chart (inventory levels over time) - Chart.js format
     const getInventoryTrends = () => {
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         
-        return months.map((month, index) => ({
-            month,
-            inStock: Math.floor(Math.random() * 200) + 100,
-            outOfStock: Math.floor(Math.random() * 50) + 10,
-            totalInventory: Math.floor(Math.random() * 300) + 150
-        }))
+        return {
+            labels: months,
+            datasets: [{
+                label: 'In Stock',
+                data: months.map(() => Math.floor(Math.random() * 200) + 100),
+                borderColor: '#00C49F',
+                backgroundColor: 'rgba(0, 196, 159, 0.1)',
+                tension: 0.4
+            }, {
+                label: 'Out of Stock',
+                data: months.map(() => Math.floor(Math.random() * 50) + 10),
+                borderColor: '#FF8042',
+                backgroundColor: 'rgba(255, 128, 66, 0.1)',
+                tension: 0.4
+            }]
+        }
     }
 
     if (isLoading) {
@@ -146,10 +172,7 @@ export function ToyDashboard() {
         )
     }
 
-    const pricesData = getPricesPerLabel()
-    const inventoryData = getInventoryByLabel()
-    const salesData = getSalesData()
-    const inventoryTrends = getInventoryTrends()
+    // Data is now generated directly in the chart components
 
     return (
         <section className="dashboard-page">
@@ -184,102 +207,69 @@ export function ToyDashboard() {
                     {/* Prices per Label Chart */}
                     <div className="chart-container">
                         <h3>Average Prices by Category</h3>
-                        <ResponsiveContainer width="100%" height={300}>
-                            <BarChart data={pricesData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="label" />
-                                <YAxis />
-                                <Tooltip formatter={(value) => [`$${value}`, 'Average Price']} />
-                                <Legend />
-                                <Bar dataKey="avgPrice" fill="#8884d8" name="Average Price" />
-                            </BarChart>
-                        </ResponsiveContainer>
+                        <Bar data={getPricesPerLabel()} options={{
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Average Price by Category'
+                                }
+                            }
+                        }} />
                     </div>
 
                     {/* Inventory by Label Chart */}
                     <div className="chart-container">
                         <h3>Inventory Status by Category</h3>
-                        <ResponsiveContainer width="100%" height={300}>
-                            <PieChart>
-                                <Pie
-                                    data={inventoryData}
-                                    cx="50%"
-                                    cy="50%"
-                                    labelLine={false}
-                                    label={({ name, percentage }) => `${name}: ${percentage}%`}
-                                    outerRadius={80}
-                                    fill="#8884d8"
-                                    dataKey="value"
-                                >
-                                    {inventoryData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                    ))}
-                                </Pie>
-                                <Tooltip formatter={(value, name) => [value, 'In Stock']} />
-                                <Legend />
-                            </PieChart>
-                        </ResponsiveContainer>
+                        <Bar data={getInventoryByLabel()} options={{
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Inventory Status by Category'
+                                }
+                            }
+                        }} />
                     </div>
 
                     {/* Sales Line Chart */}
                     <div className="chart-container full-width">
                         <h3>Monthly Sales Performance</h3>
-                        <ResponsiveContainer width="100%" height={300}>
-                            <LineChart data={salesData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="month" />
-                                <YAxis yAxisId="left" />
-                                <YAxis yAxisId="right" orientation="right" />
-                                <Tooltip />
-                                <Legend />
-                                <Line 
-                                    yAxisId="left"
-                                    type="monotone" 
-                                    dataKey="sales" 
-                                    stroke="#8884d8" 
-                                    name="Sales Count"
-                                    strokeWidth={2}
-                                />
-                                <Line 
-                                    yAxisId="right"
-                                    type="monotone" 
-                                    dataKey="revenue" 
-                                    stroke="#82ca9d" 
-                                    name="Revenue ($)"
-                                    strokeWidth={2}
-                                />
-                            </LineChart>
-                        </ResponsiveContainer>
+                        <Line data={getSalesData()} options={{
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Monthly Sales Performance'
+                                }
+                            }
+                        }} />
                     </div>
 
                     {/* Inventory Trends Area Chart */}
                     <div className="chart-container full-width">
                         <h3>Inventory Levels Over Time</h3>
-                        <ResponsiveContainer width="100%" height={300}>
-                            <AreaChart data={inventoryTrends}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="month" />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                <Area 
-                                    type="monotone" 
-                                    dataKey="inStock" 
-                                    stackId="1" 
-                                    stroke="#8884d8" 
-                                    fill="#8884d8" 
-                                    name="In Stock"
-                                />
-                                <Area 
-                                    type="monotone" 
-                                    dataKey="outOfStock" 
-                                    stackId="1" 
-                                    stroke="#ff8042" 
-                                    fill="#ff8042" 
-                                    name="Out of Stock"
-                                />
-                            </AreaChart>
-                        </ResponsiveContainer>
+                        <Line data={getInventoryTrends()} options={{
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Inventory Levels Over Time'
+                                }
+                            }
+                        }} />
                     </div>
                 </div>
 
