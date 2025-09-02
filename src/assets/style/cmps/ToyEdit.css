@@ -120,9 +120,20 @@ textarea.form-input {
   color: #2c3e50;
 }
 
+/* Modern Multi-Select Integration */
+.modern-multi-select.error .select-input {
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.modern-multi-select.error .select-input.open {
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
 /* React Select Styling */
 .react-select-container {
-  width: 100%;
+    width: 100%;
 }
 
 .react-select__control {
