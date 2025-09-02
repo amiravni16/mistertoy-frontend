@@ -7,6 +7,7 @@ import { toyService } from '../services/toy.service'
 import { loadToyLabels, saveToy } from '../store/actions/toy.actions'
 import { useSelector } from 'react-redux'
 import { useConfirmTabClose } from '../hooks/useConfirmTabClose'
+import { ModernMultiSelect } from '../cmps/ModernMultiSelect'
 
 // Validation schema
 const toySchema = yup.object({
@@ -194,18 +195,19 @@ export function ToyEdit() {
                                 {/* Categories Multi-Select */}
                                 <div className="form-group full-width">
                                     <label htmlFor="labels">Categories *</label>
-                                    <Field
-                                        as="select"
-                                        id="labels"
-                                        name="labels"
-                                        multiple
-                                        className={`form-input ${errors.labels && touched.labels ? 'error' : ''}`}
-                                    >
-                                        {labels?.map(label => (
-                                            <option key={label} value={label}>
-                                                {label}
-                                            </option>
-                                        ))}
+                                    <Field name="labels">
+                                        {({ field, form }) => (
+                                            <ModernMultiSelect
+                                                options={labels || []}
+                                                value={field.value || []}
+                                                onChange={(newValue) => {
+                                                    form.setFieldValue('labels', newValue)
+                                                    form.setFieldTouched('labels', true)
+                                                }}
+                                                placeholder="Select categories..."
+                                                className={errors.labels && touched.labels ? 'error' : ''}
+                                            />
+                                        )}
                                     </Field>
                                     {errors.labels && touched.labels && (
                                         <span className="error-message">{errors.labels}</span>
