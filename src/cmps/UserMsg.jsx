@@ -6,8 +6,8 @@ export function UserMsg() {
   const timeoutIdRef = useRef()
 
   useEffect(() => {
-    const unsubscribe = eventBus.on('show-user-msg', msg => {
-      setMsg(msg)
+    const unsubscribe = eventBus.on('show-user-msg', event => {
+      setMsg(event.detail)
       if (timeoutIdRef.current) {
         clearTimeout(timeoutIdRef.current)
       }
