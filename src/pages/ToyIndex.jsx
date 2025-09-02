@@ -42,7 +42,12 @@ export function ToyIndex() {
             .then(() => showSuccessMsg('Toy removed'))
             .catch(err => {
                 console.log('Cannot remove toy', err)
-                showErrorMsg('Cannot remove toy')
+                // Check if it's an authentication error
+                if (err.response?.status === 401) {
+                    showErrorMsg('Please log in to remove toys')
+                } else {
+                    showErrorMsg('Cannot remove toy')
+                }
             })
     }
 
