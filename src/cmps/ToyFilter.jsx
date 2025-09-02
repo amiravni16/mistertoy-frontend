@@ -6,16 +6,49 @@ import { toyService } from '../services/toy.service.js'
 import { ModernMultiSelect } from './ModernMultiSelect'
 import '../assets/style/cmps/ToyFilter.css'
 
-// Validation schema
+// Enhanced validation schema
 const filterSchema = yup.object({
-    txt: yup.string().max(50, 'Search term must be less than 50 characters'),
-    minPrice: yup.number().min(0, 'Price must be positive').nullable(),
-    maxPrice: yup.number().min(0, 'Price must be positive').nullable(),
-    inStock: yup.string().oneOf(['', 'true', 'false']),
-    labels: yup.array().of(yup.string())
-}).test('price-range', 'Min price must be less than max price', function(value) {
+    txt: yup.string()
+        .max(50, 'Search term must be less than 50 characters')
+        .matches(/^[a-zA-Z0-9\s\-&]*$/, 'Search can only contain letters, numbers, spaces, hyphens, and ampersands'),
+    minPrice: yup.number()
+        .min(0, 'Price must be positive')
+        .max(10000, 'Price must be less than $10,000')
+        .nullable()
+        .transform((value, originalValue) => {
+            // Handle empty strings
+            if (originalValue === '' || originalValue === null || originalValue === undefined) {
+                return null;
+            }
+            return value;
+        }),
+    maxPrice: yup.number()
+        .min(0, 'Price must be positive')
+        .max(10000, 'Price must be less than $10,000')
+        .nullable()
+        .transform((value, originalValue) => {
+            // Handle empty strings
+            if (originalValue === '' || originalValue === null || originalValue === undefined) {
+                return null;
+            }
+            return value;
+        }),
+    inStock: yup.string().oneOf(['', 'true', 'false'], 'Please select a valid stock status'),
+    labels: yup.array()
+        .of(yup.string())
+        .max(10, 'You can select up to 10 categories')
+}).test('price-range', 'Min price must be less than or equal to max price', function(value) {
     if (value.minPrice && value.maxPrice) {
         return value.minPrice <= value.maxPrice
+    }
+    return true
+}).test('price-logic', 'Please enter valid price values', function(value) {
+    // Both prices should be numbers if provided
+    if (value.minPrice !== null && value.minPrice !== undefined && isNaN(value.minPrice)) {
+        return this.createError({ message: 'Min price must be a valid number' })
+    }
+    if (value.maxPrice !== null && value.maxPrice !== undefined && isNaN(value.maxPrice)) {
+        return this.createError({ message: 'Max price must be a valid number' })
     }
     return true
 })
@@ -115,9 +148,9 @@ export function ToyFilter({ filterBy, onSetFilter, toyLabels }) {
                                     <Field
                                         id="search"
                                         name="txt"
-                    type="text"
+                                        type="text"
                                         placeholder="Search by name or description..."
-                                        className={`filter-input ${errors.txt && touched.txt ? 'error' : ''}`}
+                                        className={`filter-input ${errors.txt && touched.txt ? 'error' : ''} ${touched.txt && !errors.txt ? 'valid' : ''}`}
                                     />
                                     {errors.txt && touched.txt && (
                                         <span className="error-message">{errors.txt}</span>
@@ -133,8 +166,9 @@ export function ToyFilter({ filterBy, onSetFilter, toyLabels }) {
                                         type="number"
                                         placeholder="0"
                                         min="0"
+                                        max="10000"
                                         step="0.01"
-                                        className={`filter-input ${errors.minPrice && touched.minPrice ? 'error' : ''}`}
+                                        className={`filter-input ${errors.minPrice && touched.minPrice ? 'error' : ''} ${touched.minPrice && !errors.minPrice ? 'valid' : ''}`}
                                     />
                                     {errors.minPrice && touched.minPrice && (
                                         <span className="error-message">{errors.minPrice}</span>
@@ -149,8 +183,9 @@ export function ToyFilter({ filterBy, onSetFilter, toyLabels }) {
                                         type="number"
                                         placeholder="1000"
                                         min="0"
+                                        max="10000"
                                         step="0.01"
-                                        className={`filter-input ${errors.maxPrice && touched.maxPrice ? 'error' : ''}`}
+                                        className={`filter-input ${errors.maxPrice && touched.maxPrice ? 'error' : ''} ${touched.maxPrice && !errors.maxPrice ? 'valid' : ''}`}
                                     />
                                     {errors.maxPrice && touched.maxPrice && (
                                         <span className="error-message">{errors.maxPrice}</span>
@@ -187,7 +222,7 @@ export function ToyFilter({ filterBy, onSetFilter, toyLabels }) {
                                                 form.setFieldTouched('labels', true)
                                             }}
                                             placeholder="Select categories..."
-                                            className={errors.labels && touched.labels ? 'error' : ''}
+                                            className={`${errors.labels && touched.labels ? 'error' : ''} ${touched.labels && !errors.labels ? 'valid' : ''}`}
                                         />
                                     </div>
                                 )}
@@ -198,21 +233,25 @@ export function ToyFilter({ filterBy, onSetFilter, toyLabels }) {
                         </div>
                 </div>
 
-                                {/* Form Validation Summary - Temporarily disabled */}
-                                {/* <div className="validation-container">
+                                {/* Form Validation Summary */}
+                                <div className="validation-container">
                                     {Object.keys(errors).length > 0 && (
                                         <div className="validation-summary">
-                                            <h4>Please fix the following errors:</h4>
+                                            <h4>⚠️ Please fix the following errors:</h4>
                                             <ul>
                                                 {Object.entries(errors).map(([field, error]) => (
                                                     <li key={field}>
-                                                        <strong>{field}:</strong> {error}
+                                                        <strong>{field === 'txt' ? 'Search' : 
+                                                                field === 'minPrice' ? 'Min Price' :
+                                                                field === 'maxPrice' ? 'Max Price' :
+                                                                field === 'inStock' ? 'Stock Status' :
+                                                                field === 'labels' ? 'Categories' : field}:</strong> {error}
                                                     </li>
                                                 ))}
                                             </ul>
                                         </div>
                                     )}
-                                </div> */}
+                                </div>
 
                                 {/* Filter Actions */}
                                 <div className="filter-actions">

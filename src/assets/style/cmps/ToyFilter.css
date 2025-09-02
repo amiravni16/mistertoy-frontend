@@ -97,6 +97,11 @@
     box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
 }
 
+.filter-input.valid {
+    border-color: #27ae60;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
 .error-message {
     color: #e74c3c;
     font-size: 0.8rem;
