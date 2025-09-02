@@ -3,7 +3,7 @@ export const eventBus = {
         document.addEventListener(event, cb)
     },
     emit(event, data) {
-        document.dispatchEvent(new CustomEvent(event, data))
+        document.dispatchEvent(new CustomEvent(event, { detail: data }))
     },
     off(event, cb) {
         document.removeEventListener(event, cb)

@@ -46,7 +46,7 @@ function query(filterBy = {}, sortBy = {}) {
                 _id: backendToy._id,
                 name: backendToy.name,
                 price: backendToy.price,
-                labels: backendToy.category ? backendToy.category.split(', ').filter(Boolean) : [],
+                labels: backendToy.category ? [backendToy.category] : [],
                 imgUrl: backendToy.imageUrl || `https://robohash.org/${backendToy.name}?set=set4`,
                 createdAt: new Date(backendToy.createdAt).getTime(),
                 inStock: backendToy.inStock,
