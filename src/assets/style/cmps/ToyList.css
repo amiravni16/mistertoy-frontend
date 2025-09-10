@@ -1,11 +1,79 @@
 .toy-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 2rem;
-  padding: 2rem;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
+    display: grid;
+    flex: 1;
+    padding-inline: 2em;
+}
+
+.toy-list ul {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 320px)) !important;
+    justify-content: center !important;
+    gap: 2em !important;
+    padding-block: 1em 2em !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    width: 100% !important;
+}
+
+/* Responsive grid for larger screens */
+@media (min-width: 768px) {
+    .toy-list ul {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 350px)) !important;
+        gap: 2.5em !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .toy-list ul {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 380px)) !important;
+        gap: 3em !important;
+    }
+}
+
+.toy-list li {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: space-evenly !important;
+    padding: 1.5em !important;
+    border-radius: 8px !important;
+    background-color: #f2f3f7 !important;
+    box-shadow: #00000026 1.95px 1.95px 2.6px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    min-height: 400px !important;
+}
+
+/* Button container styling */
+.toy-list li > div {
+    display: flex !important;
+    gap: 0.5em !important;
+    margin-top: 1em !important;
+    width: 100% !important;
+    justify-content: center !important;
+}
+
+.toy-list li .btn {
+    flex: 1 !important;
+    min-width: 80px !important;
+    max-width: 120px !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.toy-list li a {
+    width: 100%;
+}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
 }
 
 .toy-list-header {
@@ -75,23 +143,18 @@
 @media (max-width: 1400px) {
   .toy-list {
     max-width: 1200px;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 }
 
 @media (max-width: 1024px) {
   .toy-list {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-    padding: 1.5rem;
+    max-width: 1000px;
   }
 }
 
 @media (max-width: 768px) {
   .toy-list {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    padding: 1rem;
+    max-width: 100%;
   }
   
   .toy-list-header h2 {

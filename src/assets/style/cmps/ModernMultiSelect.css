@@ -152,7 +152,10 @@
 }
 
 .select-dropdown {
-    position: fixed;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
     z-index: 9999;
     background: white;
     border: 1px solid #e1e8ed;
@@ -162,6 +165,7 @@
     overflow: hidden;
     animation: slideDown 0.2s ease-out;
     min-width: 200px;
+    margin-top: 4px;
 }
 
 @keyframes slideDown {

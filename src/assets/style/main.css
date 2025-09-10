@@ -8,6 +8,7 @@
 @import 'base/helpers.css';
 @import 'base/layout.css';
 @import 'base/forms.css';
+@import 'base/buttons.css';
 
 /* Components */
 @import 'cmps/AppHeader.css';
@@ -24,7 +25,13 @@
 @import 'cmps/ProfilePage.css';
 
 /* Pages */
-@import 'cmps/HomePage.css';
-@import 'cmps/ToyDashboard.css';
+@import 'pages/HomePage.css';
+@import 'pages/AboutUS.css';
+@import 'pages/ToyDashboard.css';
+@import 'pages/ToyIndex.css';
+@import 'pages/ToyDetails.css';
+@import 'pages/ToyEdit.css';
+@import 'pages/ProfilePage.css';
+@import 'pages/SignupPage.css';
 
 /* MEDIA QUERIES */

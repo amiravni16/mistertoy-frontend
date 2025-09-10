@@ -2,13 +2,15 @@
     background: white;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
+    margin: 0 auto 2rem auto;
     overflow: hidden;
     height: 500px;
     min-height: 500px;
     max-height: 500px;
     transition: none !important;
     animation: none !important;
+    max-width: 800px;
+    width: 100%;
 }
 
 .filter-header {
@@ -100,6 +102,105 @@
 .filter-input.valid {
     border-color: #27ae60;
     box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+/* Fix select element styling - More specific targeting */
+.filter-group select.filter-input,
+.filter-input[as="select"],
+select.filter-input {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 16px !important;
+    padding-right: 40px !important;
+    border: 2px solid #e1e8ed !important;
+}
+
+.filter-group select.filter-input:focus,
+.filter-input[as="select"]:focus,
+select.filter-input:focus {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+    border-color: var(--clr1) !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+}
+
+/* Remove any existing background images or pseudo-elements */
+.filter-group select.filter-input::before,
+.filter-group select.filter-input::after,
+.filter-input[as="select"]::before,
+.filter-input[as="select"]::after,
+select.filter-input::before,
+select.filter-input::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Target all select elements in the filter form */
+.toy-filter select,
+.toy-filter fieldset select,
+.toy-filter .filter-group select {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 16px !important;
+    padding-right: 40px !important;
+}
+
+.toy-filter select:focus,
+.toy-filter fieldset select:focus,
+.toy-filter .filter-group select:focus {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+}
+
+/* Nuclear option - completely reset select styling */
+.toy-filter select {
+    background: white !important;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 16px !important;
+    background-attachment: initial !important;
+    background-clip: initial !important;
+    background-origin: initial !important;
+    background-size: 16px !important;
+    background-color: white !important;
+    border: 2px solid #e1e8ed !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 40px 0.75rem 1rem !important;
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+    color: #333 !important;
+    cursor: pointer !important;
+    outline: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    word-spacing: normal !important;
+    text-indent: 0 !important;
+    text-align: left !important;
+    text-rendering: auto !important;
+    color-adjust: exact !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    -webkit-border-radius: 8px !important;
+    -moz-border-radius: 8px !important;
+    border-radius: 8px !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
 }
 
 .error-message {
