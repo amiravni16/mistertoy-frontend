@@ -42,10 +42,7 @@ function query(filterBy = {}, sortBy = {}) {
     
     return httpService.get(BASE_URL, params)
         .then(res => {
-            console.log('Backend response:', res)
             let toysToShow = res.map(backendToy => {
-                console.log('Full backend toy object:', backendToy)
-                console.log('Processing toy:', backendToy.name, 'labels:', backendToy.labels)
                 return {
                     _id: backendToy._id,
                     name: backendToy.name,
