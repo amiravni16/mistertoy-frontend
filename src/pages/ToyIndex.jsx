@@ -36,6 +36,14 @@ export function ToyIndex() {
             })
     }, [filterBy, sortBy])
 
+    useEffect(() => {
+        loadToyLabels()
+            .catch(err => {
+                console.log('err loading labels:', err)
+                showErrorMsg('Cannot load categories')
+            })
+    }, [])
+
 
     function onRemoveToy(toyId) {
         removeToy(toyId)
