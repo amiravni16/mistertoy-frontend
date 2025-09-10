@@ -1,29 +1,20 @@
 import { Provider } from 'react-redux'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
-import './assets/style/main.css'
 
-import { UserMsg } from './cmps/UserMsg'
 import { AppFooter } from './cmps/AppFooter'
 import { AppHeader } from './cmps/AppHeader'
-import { AboutUs } from './pages/AboutUS'
+import { UserMsg } from './cmps/UserMsg'
+import { AboutUS } from './pages/AboutUS'
+import { HomePage } from './pages/HomePage'
+import { ProfilePage } from './pages/ProfilePage'
+import { SignupPage } from './pages/SignupPage'
 import { ToyDashboard } from './pages/ToyDashboard'
 import { ToyDetails } from './pages/ToyDetails'
 import { ToyEdit } from './pages/ToyEdit'
 import { ToyIndex } from './pages/ToyIndex'
-import { LoginPage } from './pages/LoginPage'
-import { SignupPage } from './pages/SignupPage'
-import { ProfilePage } from './pages/ProfilePage'
 import { store } from './store/store'
-import { HomePage } from './pages/HomePage'
-import { useEffect } from 'react'
-import { loadToyLabels, loadToys } from './store/actions/toy.actions'
 
-export function App() {
-    useEffect(() => {
-        loadToys()
-        loadToyLabels()
-    }, [])
-    
+function App() {
     return (
         <Provider store={store}>
             <Router>
@@ -32,14 +23,13 @@ export function App() {
                     <main>
                         <Routes>
                             <Route element={<HomePage />} path="/" />
-                            <Route element={<AboutUs />} path="/about" />
+                            <Route element={<AboutUS />} path="/about" />
                             <Route element={<ToyDashboard />} path="/dashboard" />
-                            <Route element={<LoginPage />} path="/login" />
-                            <Route element={<SignupPage />} path="/signup" />
-                            <Route element={<ProfilePage />} path="/profile" />
                             <Route element={<ToyIndex />} path="/toy" />
                             <Route element={<ToyEdit />} path="/toy/edit/:toyId?" />
                             <Route element={<ToyDetails />} path="/toy/:toyId" />
+                            <Route element={<ProfilePage />} path="/profile" />
+                            <Route element={<SignupPage />} path="/signup" />
                         </Routes>
                     </main>
                     <AppFooter />
@@ -49,3 +39,5 @@ export function App() {
         </Provider>
     )
 }
+
+export default App
