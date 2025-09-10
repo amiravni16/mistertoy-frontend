@@ -42,17 +42,22 @@ function query(filterBy = {}, sortBy = {}) {
     
     return httpService.get(BASE_URL, params)
         .then(res => {
-            let toysToShow = res.map(backendToy => ({
-                _id: backendToy._id,
-                name: backendToy.name,
-                price: backendToy.price,
-                labels: backendToy.category ? backendToy.category.split(', ').filter(Boolean) : [],
-                imgUrl: backendToy.imageUrl || `https://robohash.org/${backendToy.name}?set=set4`,
-                createdAt: new Date(backendToy.createdAt).getTime(),
-                inStock: backendToy.inStock,
-                description: backendToy.description,
-                ageRange: backendToy.ageRange
-            }))
+            console.log('Backend response:', res)
+            let toysToShow = res.map(backendToy => {
+                console.log('Full backend toy object:', backendToy)
+                console.log('Processing toy:', backendToy.name, 'labels:', backendToy.labels)
+                return {
+                    _id: backendToy._id,
+                    name: backendToy.name,
+                    price: backendToy.price,
+                    labels: backendToy.labels || [],
+                    imgUrl: backendToy.imageUrl || `https://robohash.org/${backendToy.name}?set=set4`,
+                    createdAt: backendToy.createdAt,
+                    inStock: backendToy.inStock,
+                    description: backendToy.description,
+                    ageRange: backendToy.ageRange
+                }
+            })
             
             //* Filter by labels (backend doesn't support this yet, so we filter client-side)
             if (filterBy.labels?.length) {
@@ -88,9 +93,9 @@ function getById(toyId) {
                 _id: backendToy._id,
                 name: backendToy.name,
                 price: backendToy.price,
-                labels: backendToy.category ? backendToy.category.split(', ').filter(Boolean) : [],
+                labels: backendToy.labels || [],
                 imgUrl: backendToy.imageUrl || `https://robohash.org/${backendToy.name}?set=set4`,
-                createdAt: new Date(backendToy.createdAt).getTime(),
+                createdAt: backendToy.createdAt,
                 inStock: backendToy.inStock,
                 description: backendToy.description,
                 ageRange: backendToy.ageRange
@@ -116,7 +121,7 @@ function save(toy) {
         // Update existing toy
         return httpService.put(`${BASE_URL}/${toy._id}`, {
             name: toy.name,
-            category: toy.labels?.join(', ') || '',
+            labels: toy.labels || [],
             price: toy.price,
             description: toy.description || '',
             ageRange: toy.ageRange || '',
@@ -128,9 +133,9 @@ function save(toy) {
                 _id: backendToy._id,
                 name: backendToy.name,
                 price: backendToy.price,
-                labels: backendToy.category ? backendToy.category.split(', ').filter(Boolean) : [],
+                labels: backendToy.labels || [],
                 imgUrl: backendToy.imageUrl || `https://robohash.org/${backendToy.name}?set=set4`,
-                createdAt: new Date(backendToy.createdAt).getTime(),
+                createdAt: backendToy.createdAt,
                 inStock: backendToy.inStock,
                 description: backendToy.description,
                 ageRange: backendToy.ageRange
@@ -144,7 +149,7 @@ function save(toy) {
         // Add new toy
         return httpService.post(BASE_URL, {
             name: toy.name,
-            category: toy.labels?.join(', ') || '',
+            labels: toy.labels || [],
             price: toy.price,
             description: toy.description || '',
             ageRange: toy.ageRange || '',
@@ -156,9 +161,9 @@ function save(toy) {
                 _id: backendToy._id,
                 name: backendToy.name,
                 price: backendToy.price,
-                labels: backendToy.category ? backendToy.category.split(', ').filter(Boolean) : [],
+                labels: backendToy.labels || [],
                 imgUrl: backendToy.imageUrl || `https://robohash.org/${backendToy.name}?set=set4`,
-                createdAt: new Date(backendToy.createdAt).getTime(),
+                createdAt: backendToy.createdAt,
                 inStock: backendToy.inStock,
                 description: backendToy.description,
                 ageRange: backendToy.ageRange
@@ -187,39 +192,9 @@ function getDefaultSort() {
 }
 
 function getToyLabels() {
-    // First try to get labels from existing toys in the database
-    return query({ pageIdx: 0, pageSize: 1000 }) // Get all toys to extract unique labels
-        .then(result => {
-            console.log('Raw toys data from backend:', result)
-            const allLabels = new Set()
-            
-            // Add predefined labels
-            labels.forEach(label => allLabels.add(label))
-            console.log('Predefined labels:', labels)
-            
-            // Extract labels from existing toys
-            if (result && result.length > 0) {
-                console.log('Processing', result.length, 'toys for labels')
-                result.forEach(toy => {
-                    console.log('Toy:', toy.name, 'has labels:', toy.labels)
-                    if (toy.labels && Array.isArray(toy.labels)) {
-                        toy.labels.forEach(label => {
-                            if (label && label.trim()) {
-                                allLabels.add(label.trim())
-                            }
-                        })
-                    }
-                })
-            }
-            
-            const finalLabels = Array.from(allLabels).sort()
-            console.log('Final labels for filter:', finalLabels)
-            return finalLabels
-        })
-        .catch(err => {
-            console.log('Error getting labels from toys, using default labels:', err)
-            return labels // Fallback to predefined labels
-        })
+    // For now, return predefined labels to fix the loading issue
+    console.log('Getting toy labels:', labels)
+    return Promise.resolve([...labels])
 }
 
 function getEmptyToy() {
