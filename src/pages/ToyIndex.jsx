@@ -69,22 +69,16 @@ export function ToyIndex() {
 
     return (
         <section className="toy-index">
-            <section className="toy-filter-sort container">
-                <ToyFilter
-                    filterBy={filterBy}
-                    onSetFilter={onSetFilter}
-                    toyLabels={toyLabels}
-                />
-                <ToySort sortBy={sortBy} onSetSort={onSetSort} />
-            </section>
-
-            <div style={{ marginBlockStart: '0.5em', textAlign: 'center' }}>
-                <button style={{ marginInline: 0 }}>
-                    <Link to="/toy/edit">Add Toy</Link>
-                </button>
+            <ToyFilter
+                filterBy={filterBy}
+                onSetFilter={onSetFilter}
+                toyLabels={toyLabels}
+            />
+            <div className="add-toy" style={{ alignSelf: 'center' }}>
+                <Link className="btn" to="/toy/edit">
+                    Add Toy
+                </Link>
             </div>
-
-
             {isLoading && <Loader />}
             {!isLoading && <ToyList toys={toys} onRemoveToy={onRemoveToy} />}
             <PopUp isOpen={filterBy.txt ==='xxx'}>

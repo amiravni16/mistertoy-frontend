@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react'
-import { createPortal } from 'react-dom'
 import '../assets/style/cmps/ModernMultiSelect.css'
 
 export function ModernMultiSelect({ 
@@ -12,24 +11,11 @@ export function ModernMultiSelect({
 }) {
     const [isOpen, setIsOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState('')
-    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 })
     const dropdownRef = useRef(null)
     const inputRef = useRef(null)
     const containerRef = useRef(null)
 
-    // Calculate dropdown position
-    const calculateDropdownPosition = () => {
-        if (containerRef.current) {
-            const rect = containerRef.current.getBoundingClientRect()
-            setDropdownPosition({
-                top: rect.bottom + window.scrollY + 4,
-                left: rect.left + window.scrollX,
-                width: rect.width
-            })
-        }
-    }
-
-    // Close dropdown when clicking outside and handle window resize
+    // Close dropdown when clicking outside
     useEffect(() => {
         function handleClickOutside(event) {
             if (containerRef.current && !containerRef.current.contains(event.target) &&
@@ -39,20 +25,10 @@ export function ModernMultiSelect({
             }
         }
 
-        function handleResize() {
-            if (isOpen) {
-                calculateDropdownPosition()
-            }
-        }
-
         document.addEventListener('mousedown', handleClickOutside)
-        window.addEventListener('resize', handleResize)
-        window.addEventListener('scroll', handleResize)
         
         return () => {
             document.removeEventListener('mousedown', handleClickOutside)
-            window.removeEventListener('resize', handleResize)
-            window.removeEventListener('scroll', handleResize)
         }
     }, [isOpen])
 
@@ -79,7 +55,6 @@ export function ModernMultiSelect({
     // Handle input focus
     const handleInputFocus = () => {
         if (!disabled) {
-            calculateDropdownPosition()
             setIsOpen(true)
             inputRef.current?.focus()
         }
@@ -136,15 +111,10 @@ export function ModernMultiSelect({
                 </div>
             </div>
 
-            {isOpen && createPortal(
+            {isOpen && (
                 <div 
                     className="select-dropdown"
                     ref={dropdownRef}
-                    style={{
-                        top: `${dropdownPosition.top}px`,
-                        left: `${dropdownPosition.left}px`,
-                        width: `${dropdownPosition.width}px`
-                    }}
                 >
                     <div className="dropdown-content">
                         {filteredOptions.length > 0 ? (
@@ -169,8 +139,7 @@ export function ModernMultiSelect({
                             </div>
                         )}
                     </div>
-                </div>,
-                document.body
+                </div>
             )}
         </div>
     )

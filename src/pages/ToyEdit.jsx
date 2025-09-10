@@ -136,14 +136,16 @@ export function ToyEdit() {
 
     return (
         <section className="toy-edit">
-            <div className="edit-header">
-                <h2>{toyToEdit._id ? 'Edit' : 'Add'} Toy</h2>
-                {hasUnsavedChanges && (
-                    <div className="unsaved-changes-warning">
-                        ⚠️ You have unsaved changes
-                    </div>
-                )}
-            </div>
+            <div className="edit-container">
+                <div className="edit-header">
+                    <h1>{toyToEdit._id ? 'Edit' : 'Add'} Toy</h1>
+                    <p>Enter the details for your toy below</p>
+                    {hasUnsavedChanges && (
+                        <div className="unsaved-changes-warning">
+                            ⚠️ You have unsaved changes
+                        </div>
+                    )}
+                </div>
 
             <Formik
                 initialValues={initialValues}
@@ -162,7 +164,7 @@ export function ToyEdit() {
                             <div className="form-grid">
                                 {/* Name Field */}
                                 <div className="form-group">
-                                    <label htmlFor="name">Toy Name *</label>
+                                    <label htmlFor="name" className="required">Toy Name</label>
                                     <Field
                                         id="name"
                                         name="name"
@@ -177,7 +179,7 @@ export function ToyEdit() {
 
                                 {/* Price Field */}
                                 <div className="form-group">
-                                    <label htmlFor="price">Price ($) *</label>
+                                    <label htmlFor="price" className="required">Price ($)</label>
                                     <Field
                                         id="price"
                                         name="price"
@@ -194,7 +196,7 @@ export function ToyEdit() {
 
                                 {/* Categories Multi-Select */}
                                 <div className="form-group full-width">
-                                    <label htmlFor="labels">Categories *</label>
+                                    <label htmlFor="labels" className="required">Categories</label>
                                     <Field name="labels">
                                         {({ field, form }) => (
                                             <ModernMultiSelect
@@ -222,7 +224,7 @@ export function ToyEdit() {
                                         id="description"
                                         name="description"
                                         placeholder="Enter toy description..."
-                                        rows="3"
+                                        rows="4"
                                         className={`form-input ${errors.description && touched.description ? 'error' : ''}`}
                                     />
                                     {errors.description && touched.description && (
@@ -291,6 +293,7 @@ export function ToyEdit() {
                     )
                 }}
             </Formik>
+            </div>
         </section>
     )
 }

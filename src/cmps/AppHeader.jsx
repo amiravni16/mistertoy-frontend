@@ -42,7 +42,7 @@ export function AppHeader() {
                         {isLoggedIn ? (
                             <>
                                 <NavLink to="/profile">profile</NavLink> |
-                                <button onClick={handleLogout} className="btn-logout-header">
+                                <button onClick={handleLogout} className="btn btn--sm btn--ghost">
                                     logout
                                 </button>
                             </>

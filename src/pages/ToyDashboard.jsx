@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, LineElement, PointElement } from 'chart.js'
 import { Pie, Bar, Line } from 'react-chartjs-2'
 import { toyService } from '../services/toy.service.js'
-import '../assets/style/cmps/ToyDashboard.css'
+import '../assets/style/pages/ToyDashboard.css'
 
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, LineElement, PointElement)
@@ -155,19 +155,23 @@ export function ToyDashboard() {
 
     if (isLoading) {
         return (
-            <div className="dashboard-loading">
-                <div className="loading-spinner"></div>
-                <p>Loading dashboard data...</p>
+            <div className="toy-dashboard">
+                <div className="dashboard-loading">
+                    <div className="loading-spinner"></div>
+                    <p>Loading dashboard data...</p>
+                </div>
             </div>
         )
     }
 
     if (error) {
         return (
-            <div className="dashboard-error">
-                <h2>Error Loading Dashboard</h2>
-                <p>{error}</p>
-                <button onClick={loadToys} className="btn-retry">Retry</button>
+            <div className="toy-dashboard">
+                <div className="dashboard-error">
+                    <h2>Error Loading Dashboard</h2>
+                    <p>{error}</p>
+                    <button onClick={loadToys} className="btn btn--primary">Retry</button>
+                </div>
             </div>
         )
     }
@@ -175,109 +179,115 @@ export function ToyDashboard() {
     // Data is now generated directly in the chart components
 
     return (
-        <section className="dashboard-page">
-            <div className="dashboard-container">
-                <div className="dashboard-header">
-                    <h1>Mister Toy Dashboard</h1>
-                    <p>Analytics and insights for your toy business</p>
-                </div>
+        <section className="toy-dashboard">
+            <div className="dashboard-header">
+                <h1>Mister Toy Dashboard</h1>
+                <p className="dashboard-description">Analytics and insights for your toy business</p>
+            </div>
 
-                <div className="dashboard-stats">
-                    <div className="stat-card">
-                        <h3>Total Toys</h3>
-                        <p className="stat-number">{toys.length}</p>
-                    </div>
-                    <div className="stat-card">
-                        <h3>In Stock</h3>
-                        <p className="stat-number">{toys.filter(toy => toy.inStock).length}</p>
-                    </div>
-                    <div className="stat-card">
-                        <h3>Categories</h3>
-                        <p className="stat-number">{new Set(toys.flatMap(toy => toy.labels || [])).size}</p>
-                    </div>
-                    <div className="stat-card">
-                        <h3>Avg Price</h3>
-                        <p className="stat-number">
-                            ${Math.round((toys.reduce((sum, toy) => sum + toy.price, 0) / toys.length) * 100) / 100}
-                        </p>
-                    </div>
+            <div className="dashboard-stats">
+                <div className="stat-card">
+                    <div className="stat-icon">🧸</div>
+                    <div className="stat-value">{toys.length}</div>
+                    <div className="stat-label">Total Toys</div>
                 </div>
+                <div className="stat-card">
+                    <div className="stat-icon">✅</div>
+                    <div className="stat-value">{toys.filter(toy => toy.inStock).length}</div>
+                    <div className="stat-label">In Stock</div>
+                </div>
+                <div className="stat-card">
+                    <div className="stat-icon">📂</div>
+                    <div className="stat-value">{new Set(toys.flatMap(toy => toy.labels || [])).size}</div>
+                    <div className="stat-label">Categories</div>
+                </div>
+                <div className="stat-card">
+                    <div className="stat-icon">💰</div>
+                    <div className="stat-value">
+                        ${Math.round((toys.reduce((sum, toy) => sum + toy.price, 0) / toys.length) * 100) / 100}
+                    </div>
+                    <div className="stat-label">Avg Price</div>
+                </div>
+            </div>
 
-                <div className="charts-grid">
-                    {/* Prices per Label Chart */}
-                    <div className="chart-container">
+            <div className="dashboard-charts">
+                {/* Prices per Label Chart */}
+                <div className="chart-card">
+                    <div className="chart-header">
                         <h3>Average Prices by Category</h3>
+                    </div>
+                    <div className="chart-content">
                         <Bar data={getPricesPerLabel()} options={{
                             responsive: true,
+                            maintainAspectRatio: false,
                             plugins: {
                                 legend: {
                                     position: 'top',
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Average Price by Category'
                                 }
                             }
                         }} />
                     </div>
+                </div>
 
-                    {/* Inventory by Label Chart */}
-                    <div className="chart-container">
+                {/* Inventory by Label Chart */}
+                <div className="chart-card">
+                    <div className="chart-header">
                         <h3>Inventory Status by Category</h3>
+                    </div>
+                    <div className="chart-content">
                         <Bar data={getInventoryByLabel()} options={{
                             responsive: true,
+                            maintainAspectRatio: false,
                             plugins: {
                                 legend: {
                                     position: 'top',
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Inventory Status by Category'
                                 }
                             }
                         }} />
                     </div>
+                </div>
 
-                    {/* Sales Line Chart */}
-                    <div className="chart-container full-width">
+                {/* Sales Line Chart */}
+                <div className="chart-card">
+                    <div className="chart-header">
                         <h3>Monthly Sales Performance</h3>
+                    </div>
+                    <div className="chart-content">
                         <Line data={getSalesData()} options={{
                             responsive: true,
+                            maintainAspectRatio: false,
                             plugins: {
                                 legend: {
                                     position: 'top',
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Monthly Sales Performance'
                                 }
                             }
                         }} />
                     </div>
+                </div>
 
-                    {/* Inventory Trends Area Chart */}
-                    <div className="chart-container full-width">
+                {/* Inventory Trends Area Chart */}
+                <div className="chart-card">
+                    <div className="chart-header">
                         <h3>Inventory Levels Over Time</h3>
+                    </div>
+                    <div className="chart-content">
                         <Line data={getInventoryTrends()} options={{
                             responsive: true,
+                            maintainAspectRatio: false,
                             plugins: {
                                 legend: {
                                     position: 'top',
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Inventory Levels Over Time'
                                 }
                             }
                         }} />
                     </div>
                 </div>
+            </div>
 
-                <div className="dashboard-actions">
-                    <button onClick={loadToys} className="btn-refresh">
-                        Refresh Data
-                    </button>
-                </div>
+            <div className="dashboard-actions">
+                <button onClick={loadToys} className="action-btn primary">
+                    🔄 Refresh Data
+                </button>
             </div>
         </section>
     )
