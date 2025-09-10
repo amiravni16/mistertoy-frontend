@@ -1,0 +1,152 @@
+.about-us {
+    padding: 2rem 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.about-header h2 {
+    color: var(--clr1);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--clr1), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.about-description {
+    font-size: 1.2rem;
+    color: #5a6c7d;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+.about-text {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.about-text h3 {
+    color: var(--clr1);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 2rem 0 1rem 0;
+    border-bottom: 2px solid #e1e8ed;
+    padding-bottom: 0.5rem;
+}
+
+.about-text h3:first-child {
+    margin-top: 0;
+}
+
+.about-text p {
+    color: #5a6c7d;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.about-text ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.about-text li {
+    color: #5a6c7d;
+    padding: 0.5rem 0;
+    font-size: 1.1rem;
+    border-left: 3px solid var(--clr1);
+    padding-left: 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(99, 102, 241, 0.05);
+    border-radius: 0 8px 8px 0;
+}
+
+.map-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+    .about-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .about-header h2 {
+        font-size: 2rem;
+    }
+    
+    .about-description {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-us {
+        padding: 1rem;
+    }
+    
+    .about-header {
+        margin-bottom: 2rem;
+    }
+    
+    .about-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .about-description {
+        font-size: 1rem;
+    }
+    
+    .about-text {
+        padding: 1.5rem;
+    }
+    
+    .about-text h3 {
+        font-size: 1.3rem;
+    }
+    
+    .about-text li {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-text {
+        padding: 1rem;
+    }
+    
+    .about-text h3 {
+        font-size: 1.2rem;
+    }
+    
+    .about-text p {
+        font-size: 0.95rem;
+    }
+    
+    .about-text li {
+        font-size: 0.9rem;
+        padding: 0.4rem 0;
+        padding-left: 0.8rem;
+    }
+}
+
