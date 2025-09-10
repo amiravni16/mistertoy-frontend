@@ -1,7 +1,7 @@
-import axios from 'axios'
+import { httpService } from './http.service.js'
 import { authService } from './auth.service.js'
 
-const BASE_URL = '/api/toy'
+const BASE_URL = 'toy'
 
 
 
@@ -31,18 +31,18 @@ export const toyService = {
 
 function query(filterBy = {}, sortBy = {}) {
     // Build query parameters for backend
-    const params = new URLSearchParams()
+    const params = {}
     
-    if (filterBy.txt) params.append('txt', filterBy.txt)
-    if (filterBy.minPrice) params.append('minPrice', filterBy.minPrice)
-    if (filterBy.maxPrice) params.append('maxPrice', filterBy.maxPrice)
-    if (filterBy.category) params.append('category', filterBy.category)
-    if (typeof filterBy.inStock === 'boolean') params.append('inStock', filterBy.inStock)
-    if (filterBy.pageIdx !== undefined) params.append('pageIdx', filterBy.pageIdx)
+    if (filterBy.txt) params.txt = filterBy.txt
+    if (filterBy.minPrice) params.minPrice = filterBy.minPrice
+    if (filterBy.maxPrice) params.maxPrice = filterBy.maxPrice
+    if (filterBy.category) params.category = filterBy.category
+    if (typeof filterBy.inStock === 'boolean') params.inStock = filterBy.inStock
+    if (filterBy.pageIdx !== undefined) params.pageIdx = filterBy.pageIdx
     
-    return axios.get(`${BASE_URL}?${params.toString()}`)
+    return httpService.get(BASE_URL, params)
         .then(res => {
-            let toysToShow = res.data.map(backendToy => ({
+            let toysToShow = res.map(backendToy => ({
                 _id: backendToy._id,
                 name: backendToy.name,
                 price: backendToy.price,
@@ -82,9 +82,8 @@ function query(filterBy = {}, sortBy = {}) {
 }
 
 function getById(toyId) {
-    return axios.get(`${BASE_URL}/${toyId}`)
-        .then(res => {
-            const backendToy = res.data
+    return httpService.get(`${BASE_URL}/${toyId}`)
+        .then(backendToy => {
             return {
                 _id: backendToy._id,
                 name: backendToy.name,
@@ -104,7 +103,7 @@ function getById(toyId) {
 }
 
 function remove(toyId) {
-    return axios.delete(`${BASE_URL}/${toyId}`)
+    return httpService.delete(`${BASE_URL}/${toyId}`)
         .then(() => toyId)
         .catch(err => {
             console.error('Error removing toy:', err)
@@ -115,7 +114,7 @@ function remove(toyId) {
 function save(toy) {
     if (toy._id) {
         // Update existing toy
-        return axios.put(`${BASE_URL}/${toy._id}`, {
+        return httpService.put(`${BASE_URL}/${toy._id}`, {
             name: toy.name,
             category: toy.labels?.join(', ') || '',
             price: toy.price,
@@ -124,8 +123,7 @@ function save(toy) {
             imageUrl: toy.imgUrl || '',
             inStock: toy.inStock
         })
-        .then(res => {
-            const backendToy = res.data
+        .then(backendToy => {
             return {
                 _id: backendToy._id,
                 name: backendToy.name,
@@ -144,7 +142,7 @@ function save(toy) {
         })
     } else {
         // Add new toy
-        return axios.post(BASE_URL, {
+        return httpService.post(BASE_URL, {
             name: toy.name,
             category: toy.labels?.join(', ') || '',
             price: toy.price,
@@ -153,8 +151,7 @@ function save(toy) {
             imageUrl: toy.imgUrl || '',
             inStock: toy.inStock
         })
-        .then(res => {
-            const backendToy = res.data
+        .then(backendToy => {
             return {
                 _id: backendToy._id,
                 name: backendToy.name,
