@@ -3,35 +3,61 @@
   top: 20px;
   right: 20px;
   padding: 1rem 1.5rem;
-  border-radius: 8px;
-  color: white;
-  font-weight: bold;
+  border-radius: 12px;
+  color: white !important;
+  font-weight: var(--font-weight-semibold) !important;
   z-index: 10000;
   display: flex;
   align-items: center;
   gap: 1rem;
   min-width: 300px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 500px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+  backdrop-filter: blur(8px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  animation: slideInRight 0.3s ease-out;
 }
 
 .user-msg.success {
-  background-color: var(--clr2);
+  background: linear-gradient(135deg, var(--color-success), var(--color-accent)) !important;
+  border-color: var(--color-success) !important;
 }
 
 .user-msg.error {
-  background-color: var(--clr1);
+  background: linear-gradient(135deg, var(--color-danger), var(--color-primary)) !important;
+  border-color: var(--color-danger) !important;
 }
 
 .user-msg button {
-  background: none;
-  border: none;
-  color: white;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
   font-size: 1.2rem;
+  font-weight: bold !important;
   cursor: pointer;
-  padding: 0;
+  padding: 0.25rem 0.5rem !important;
   margin-left: auto;
+  border-radius: 50% !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
 }
 
 .user-msg button:hover {
-  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.1) !important;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
