@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
+import '../assets/style/cmps/Chat.css'
 
 export function Chat() {
     const [messages, setMessages] = useState([])
     const [inputText, setInputText] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const messagesEndRef = useRef(null)
 
     const scrollToBottom = () => {
@@ -15,29 +17,40 @@ export function Chat() {
 
     function handleSubmit(ev) {
         ev.preventDefault()
-        if (!inputText.trim()) return
+        if (!inputText.trim() || isLoading) return
 
+        const messageText = inputText.trim()
+        
         // Add user message
         const userMessage = {
             id: Date.now(),
-            text: inputText,
+            text: messageText,
             sender: 'user',
             timestamp: new Date()
         }
         
         setMessages(prev => [...prev, userMessage])
         setInputText('')
+        setIsLoading(true)
 
         // Auto-response after delay
         setTimeout(() => {
             const autoResponse = {
                 id: Date.now() + 1,
-                text: `Thanks for your message: "${inputText}"! This is an auto-response.`,
+                text: `Thanks for your message: "${messageText}"! This is an auto-response.`,
                 sender: 'bot',
                 timestamp: new Date()
             }
             setMessages(prev => [...prev, autoResponse])
-        }, 1000)
+            setIsLoading(false)
+        }, 1500)
+    }
+
+    function handleKeyPress(ev) {
+        if (ev.key === 'Enter' && !ev.shiftKey) {
+            ev.preventDefault()
+            handleSubmit(ev)
+        }
     }
 
     return (
@@ -62,11 +75,17 @@ export function Chat() {
                     type="text"
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
+                    onKeyPress={handleKeyPress}
                     placeholder="Type your message..."
                     className="chat-input"
+                    disabled={isLoading}
                 />
-                <button type="submit" className="chat-send-btn">
-                    Send
+                <button 
+                    type="submit" 
+                    className={`chat-send-btn ${isLoading ? 'loading' : ''}`}
+                    disabled={!inputText.trim() || isLoading}
+                >
+                    {isLoading ? 'Sending...' : 'Send'}
                 </button>
             </form>
         </div>
