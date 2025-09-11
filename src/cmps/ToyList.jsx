@@ -1,26 +1,29 @@
 import { Link } from 'react-router-dom'
 import { ToyPreview } from './ToyPreview'
-import { useState } from 'react'
+import { authService } from '../services/auth.service.js'
 
 
 export function ToyList({ onRemoveToy, toys }) {
+    const user = authService.getLoggedinUser()
+    const isAdmin = user && user.isAdmin
+
     return (
         <section className="toy-list">
+            {isAdmin && (
+                <div className="admin-header">
+                    <Link to="/toy/edit" className="btn btn--primary">
+                        Add New Toy
+                    </Link>
+                </div>
+            )}
+            
             {!toys.length ? (
                 <h1 style={{ placeSelf: 'center' }}>It's empty here...</h1>
             ) : (
                 <ul>
                     {toys.map(toy => (
                         <li key={toy._id}>
-                            <ToyPreview toy={toy} />
-                            <div className="flex justify-center">
-                                <Link className="btn" to={`/toy/edit/${toy._id}`}>
-                                    Edit
-                                </Link>
-                                <button className="btn" onClick={() => onRemoveToy(toy._id)}>
-                                    Remove
-                                </button>
-                            </div>
+                            <ToyPreview toy={toy} onDelete={onRemoveToy} />
                         </li>
                     ))}
                 </ul>

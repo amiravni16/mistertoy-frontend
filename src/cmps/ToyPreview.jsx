@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { authService } from '../services/auth.service.js'
 
-export function ToyPreview({ toy }) {
+export function ToyPreview({ toy, onDelete }) {
     const [imageError, setImageError] = useState(false)
+    const user = authService.getLoggedinUser()
+    const isAdmin = user && user.isAdmin
 
     const handleImageError = () => {
         setImageError(true)
@@ -20,8 +23,8 @@ export function ToyPreview({ toy }) {
     }
 
     return (
-        <Link to={`/toy/${toy._id}`} title={toy.name}>
-            <article className="toy-preview flex flex-column align-center">
+        <article className="toy-preview flex flex-column align-center">
+            <Link to={`/toy/${toy._id}`} title={toy.name}>
                 <h2 className="toy-name">{toy.name || 'Unnamed Toy'}</h2>
                 <div className="img-container">
                     <img 
@@ -34,7 +37,21 @@ export function ToyPreview({ toy }) {
                 <p className={toy.inStock ? 'green' : 'red'}>
                     {toy.inStock ? 'In stock' : 'Not in stock'}
                 </p>
-            </article>
-        </Link>
+            </Link>
+            
+            {isAdmin && (
+                <div className="admin-controls">
+                    <Link to={`/toy/edit/${toy._id}`} className="btn btn--sm btn--primary">
+                        Edit
+                    </Link>
+                    <button 
+                        onClick={() => onDelete(toy._id)} 
+                        className="btn btn--sm btn--danger"
+                    >
+                        Delete
+                    </button>
+                </div>
+            )}
+        </article>
     )
 }
