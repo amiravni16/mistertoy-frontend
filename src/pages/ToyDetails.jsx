@@ -29,41 +29,72 @@ export function ToyDetails() {
     if (!toy) return <Loader />
     const formattedDate = new Date(toy.createdAt).toLocaleString('he')
     return (
-        <section className="toy-details" style={{ textAlign: 'center' }}>
-
-            <h1>
-                Toy name: <span>{toy.name}</span>
-            </h1>
-            <h1>
-                Toy price: <span>${toy.price}</span>
-            </h1>
-            <h1>
-                Labels: <span>{toy.labels.join(' ,')}</span>
-            </h1>
-            <h1>
-                Created At: <span>{formattedDate}</span>
-            </h1>
-            <h1 className={toy.inStock ? 'green' : 'red'}>
-                {toy.inStock ? 'In stock' : 'Not in stock'}
-            </h1>
-            <button className='back-btn'>
-                <Link to="/toy">Back</Link>
-            </button>
-            <section>
-                <NicePopup
-                    header={<h3>Chat About {toy.name}s</h3>}
-                    footer={<h4>&copy; 2025-9999 Toys INC.</h4>}
-                    onClose={() => setIsChatOpen(false)}
-                    isOpen={isChatOpen}
-                >
-                    <Chat />
-                </NicePopup>
-            </section >
-            {!isChatOpen && (
-                <button onClick={() => setIsChatOpen(true)} className='open-chat'>
-                    💬 Chat
-                </button>
-            )}
-        </section >
+        <section className="toy-details">
+            <div className="details-container">
+                <div className="toy-image">
+                    <div className="image-container">
+                        {toy.imgUrl ? (
+                            <img 
+                                src={toy.imgUrl} 
+                                alt={toy.name}
+                                onError={(e) => {
+                                    e.target.style.display = 'none'
+                                    e.target.nextSibling.style.display = 'flex'
+                                }}
+                            />
+                        ) : null}
+                        <div className="image-placeholder" style={{ display: toy.imgUrl ? 'none' : 'flex' }}>
+                            🧸
+                        </div>
+                    </div>
+                </div>
+                
+                <div className="toy-info">
+                    <div className="toy-header">
+                        <h1>{toy.name}</h1>
+                        <div className="toy-price">${toy.price}</div>
+                        <div className="toy-labels">
+                            {toy.labels.map((label, index) => (
+                                <span key={index} className="label">{label}</span>
+                            ))}
+                        </div>
+                        <div className={`stock-status ${toy.inStock ? 'in-stock' : 'out-of-stock'}`}>
+                            {toy.inStock ? '✅ In Stock' : '❌ Out of Stock'}
+                        </div>
+                        <div className="toy-meta">
+                            <small>Created: {formattedDate}</small>
+                        </div>
+                    </div>
+                    
+                    {toy.description && (
+                        <div className="toy-description">
+                            <h3>Description</h3>
+                            <p>{toy.description}</p>
+                        </div>
+                    )}
+                    
+                    <div className="toy-actions">
+                        <Link to="/toy" className="btn btn--outline">
+                            ← Back to Toys
+                        </Link>
+                        <button 
+                            onClick={() => setIsChatOpen(true)} 
+                            className="btn btn--primary"
+                        >
+                            💬 Chat About This Toy
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <NicePopup
+                header={<h3>Chat About {toy.name}</h3>}
+                footer={<h4>&copy; 2025-9999 Toys INC.</h4>}
+                onClose={() => setIsChatOpen(false)}
+                isOpen={isChatOpen}
+            >
+                <Chat />
+            </NicePopup>
+        </section>
     )
 }
