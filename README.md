@@ -1,12 +1,42 @@
-# React + Vite
+# MisterToy Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React application for managing toy collections with Google Maps integration.
 
-Currently, two official plugins are available:
+## Environment Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Required Environment Variables
 
-## Expanding the ESLint configuration
+Create a `.env` file in the root directory with the following variables:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```env
+# Google Maps API Key
+VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
+```
+
+### Getting a Google Maps API Key
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the Maps JavaScript API
+4. Create credentials (API Key)
+5. Restrict the API key to your domain for security
+6. Add the API key to your `.env` file
+
+## Development
+
+```bash
+npm install
+npm run dev
+```
+
+## Security Note
+
+⚠️ **Never commit your `.env` file to version control!** The `.env` file is already included in `.gitignore` to prevent accidental commits.
+
+## Features
+
+- Toy collection management
+- Google Maps integration for store locations
+- Responsive design
+- Modern UI components
+- Real-time data updates
