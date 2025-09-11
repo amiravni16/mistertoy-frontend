@@ -69,7 +69,7 @@ export function LoginPage() {
                 <div className="login-info">
                     <p>For testing, you can use:</p>
                     <p><strong>Username:</strong> admin</p>
-                    <p><strong>Password:</strong> admin</p>
+                    <p><strong>Password:</strong> password</p>
                     <p className="signup-link">
                         Don't have an account? <button 
                             type="button" 
