@@ -15,8 +15,10 @@ import {
 import { toyService } from '../services/toy.service'
 import { ToySort } from '../cmps/ToySort'
 import { PopUp } from '../cmps/PopUp'
+import { authService } from '../services/auth.service.js'
 
 export function ToyIndex() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     const toys = useSelector(storeState => storeState.toyModule.toys)
     const filterBy = useSelector(storeState => storeState.toyModule.filterBy)
@@ -27,6 +29,19 @@ export function ToyIndex() {
 
     // const [toyLabels, setToyLabels] = useState()
     const toyLabels = useSelector(storeState => storeState.toyModule.toyLabels)
+
+    // Check authentication status
+    useEffect(() => {
+        const checkAuth = () => {
+            const user = authService.getLoggedinUser()
+            setIsLoggedIn(!!user)
+        }
+        checkAuth()
+        
+        // Listen for auth changes
+        window.addEventListener('storage', checkAuth)
+        return () => window.removeEventListener('storage', checkAuth)
+    }, [])
 
     useEffect(() => {
         loadToys()
@@ -74,11 +89,13 @@ export function ToyIndex() {
                 onSetFilter={onSetFilter}
                 toyLabels={toyLabels}
             />
-            <div className="add-toy" style={{ alignSelf: 'center' }}>
-                <Link className="btn" to="/toy/edit">
-                    Add Toy
-                </Link>
-            </div>
+            {isLoggedIn && (
+                <div className="add-toy" style={{ alignSelf: 'center' }}>
+                    <Link className="btn" to="/toy/edit">
+                        Add Toy
+                    </Link>
+                </div>
+            )}
             {isLoading && <Loader />}
             {!isLoading && <ToyList toys={toys} onRemoveToy={onRemoveToy} />}
             <PopUp isOpen={filterBy.txt ==='xxx'}>

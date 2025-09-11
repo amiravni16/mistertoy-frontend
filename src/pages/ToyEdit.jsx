@@ -8,6 +8,7 @@ import { loadToyLabels, saveToy } from '../store/actions/toy.actions'
 import { useSelector } from 'react-redux'
 import { useConfirmTabClose } from '../hooks/useConfirmTabClose'
 import { ModernMultiSelect } from '../cmps/ModernMultiSelect'
+import { authService } from '../services/auth.service.js'
 
 // Validation schema
 const toySchema = yup.object({
@@ -58,6 +59,14 @@ export function ToyEdit() {
     useConfirmTabClose(hasUnsavedChanges)
 
     useEffect(() => {
+        // Check if user is logged in
+        const user = authService.getLoggedinUser()
+        if (!user) {
+            showErrorMsg('Please log in to edit toys')
+            navigate('/login')
+            return
+        }
+        
         loadToy()
         // loadToyLabels()
     }, [])

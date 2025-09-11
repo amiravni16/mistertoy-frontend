@@ -5,7 +5,7 @@ import { authService } from '../services/auth.service.js'
 export function ToyPreview({ toy, onDelete }) {
     const [imageError, setImageError] = useState(false)
     const user = authService.getLoggedinUser()
-    const isAdmin = user && user.isAdmin
+    const isLoggedIn = !!user
 
     const handleImageError = () => {
         setImageError(true)
@@ -39,7 +39,7 @@ export function ToyPreview({ toy, onDelete }) {
                 </p>
             </Link>
             
-            {isAdmin && (
+            {isLoggedIn && (
                 <div className="admin-controls">
                     <Link to={`/toy/edit/${toy._id}`} className="btn btn--sm btn--primary">
                         Edit
