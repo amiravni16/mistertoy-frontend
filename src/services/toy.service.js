@@ -42,7 +42,9 @@ function query(filterBy = {}, sortBy = {}) {
     
     return httpService.get(BASE_URL, params)
         .then(res => {
-            let toysToShow = res.map(backendToy => {
+            // Handle new backend response structure: {toys: [...], totalCount: 3, ...}
+            const toys = res.toys || res // Fallback to direct array for backward compatibility
+            let toysToShow = toys.map(backendToy => {
                 return {
                     _id: backendToy._id,
                     name: backendToy.name,
