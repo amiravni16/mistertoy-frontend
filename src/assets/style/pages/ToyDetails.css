@@ -151,6 +151,39 @@
     }
 }
 
+/* Login Prompt Styles */
+.login-prompt {
+    text-align: center;
+    padding: var(--space-6) var(--space-4);
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-lg);
+    border: 2px dashed var(--color-border);
+    
+    p {
+        margin: 0 0 var(--space-2) 0;
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+        
+        &.no-messages {
+            color: var(--color-text-muted);
+            font-style: italic;
+            font-size: var(--font-size-xs);
+        }
+    }
+    
+    .login-link {
+        color: var(--color-primary);
+        text-decoration: none;
+        font-weight: var(--font-weight-semibold);
+        transition: var(--transition-all);
+        
+        &:hover {
+            color: var(--color-primary-hover);
+            text-decoration: underline;
+        }
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .toy-details {

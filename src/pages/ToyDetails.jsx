@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { Loader } from '../cmps/Loader'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { toyService } from '../services/toy.service'
+import { authService } from '../services/auth.service'
 
 export function ToyDetails() {
-    const user = useSelector(storeState => storeState.userModule.loggedInUser)
+    const user = authService.getLoggedinUser()
     const [toy, setToy] = useState(null)
     const [msg, setMsg] = useState({ txt: '' })
     const { toyId } = useParams()
@@ -27,7 +27,6 @@ export function ToyDetails() {
             const toy = await toyService.getById(toyId)
             setToy(toy)
         } catch (error) {
-            console.log('Had issues in toy details', error)
             showErrorMsg('Cannot load toy')
             navigate('/toy')
         }
@@ -35,13 +34,25 @@ export function ToyDetails() {
 
     async function onSaveMsg(ev) {
         ev.preventDefault()
+        
+        // Check if user is logged in
+        if (!user) {
+            showErrorMsg('Please log in to send messages')
+            return
+        }
+        
         try {
-            const savedMsg = await toyService.addToyMsg(toy._id, msg)
-            setToy(prevToy => ({
-                ...prevToy,
-                msgs: [...(prevToy.msgs || []), savedMsg],
-            }))
+            const newMsg = {
+                txt: msg.txt,
+                by: {
+                    _id: user._id,
+                    fullname: user.fullname || user.username
+                }
+            }
+            
+            await toyService.addMsg(toyId, newMsg)
             setMsg({ txt: '' })
+            loadToy() // Reload toy to get updated messages from backend
             showSuccessMsg('Message saved!')
         } catch (error) {
             showErrorMsg('Cannot save message')
@@ -50,11 +61,8 @@ export function ToyDetails() {
 
     async function onRemoveMsg(msgId) {
         try {
-            await toyService.removeToyMsg(toy._id, msgId)
-            setToy(prevToy => ({
-                ...prevToy,
-                msgs: prevToy.msgs.filter(msg => msg.id !== msgId),
-            }))
+            await toyService.removeMsg(toy._id, msgId)
+            loadToy() // Reload toy to get updated messages from backend
             showSuccessMsg('Message removed!')
         } catch (error) {
             showErrorMsg('Cannot remove message')
@@ -84,36 +92,43 @@ export function ToyDetails() {
                     <Link to="/toy">Back</Link>
                 </button>
             </div>
-            {user && (
-                <div className="msg-container">
-                    <h1>Chat</h1>
-                    <form className="login-form" onSubmit={onSaveMsg}>
-                        <input
-                            type="text"
-                            name="txt"
-                            value={txt}
-                            placeholder="Enter Your Message"
-                            onChange={handleMsgChange}
-                            required
-                            autoFocus
-                        />
-                        <button>Send</button>
-                    </form>
-                    <div>
-                        <ul className="clean-list">
-                            {toy.msgs &&
-                                toy.msgs.map(msg => (
-                                    <li key={msg.id}>
-                                        By: {msg.by ? msg.by.fullname : 'Unknown User'} - {msg.txt}
-                                        <button type="button" onClick={() => onRemoveMsg(msg.id)}>
-                                            ✖️
-                                        </button>
-                                    </li>
-                                ))}
-                        </ul>
+            <div className="msg-container">
+                <h1>Chat</h1>
+                {user ? (
+                    <>
+                        <form className="login-form" onSubmit={onSaveMsg}>
+                            <input
+                                type="text"
+                                name="txt"
+                                value={txt}
+                                placeholder="Enter Your Message"
+                                onChange={handleMsgChange}
+                                required
+                                autoFocus
+                            />
+                            <button>Send</button>
+                        </form>
+                        <div>
+                            <ul className="clean-list">
+                                {toy.msgs &&
+                                    toy.msgs.map(msg => (
+                                        <li key={msg.id}>
+                                            By: {msg.by ? msg.by.fullname : 'Unknown User'} - {msg.txt}
+                                            <button type="button" onClick={() => onRemoveMsg(msg.id)}>
+                                                ✖️
+                                            </button>
+                                        </li>
+                                    ))}
+                            </ul>
+                        </div>
+                    </>
+                ) : (
+                    <div className="login-prompt">
+                        <p>Please <Link to="/login" className="login-link">login</Link> to add messages about this toy.</p>
+                        <p className="no-messages">No messages yet. Be the first to comment!</p>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </section>
     )
 }
