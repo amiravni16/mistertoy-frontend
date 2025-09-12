@@ -26,7 +26,9 @@ export const toyService = {
     getDefaultSort,
     getToyLabels,
     getToyLabelCounts,
-    getInStockValue
+    getInStockValue,
+    addToyMsg,
+    removeToyMsg
 }
 
 function query(filterBy = {}, sortBy = {}) {
@@ -97,7 +99,8 @@ function getById(toyId) {
                 createdAt: backendToy.createdAt,
                 inStock: backendToy.inStock,
                 description: backendToy.description,
-                ageRange: backendToy.ageRange
+                ageRange: backendToy.ageRange,
+                msgs: backendToy.msgs || []
             }
         })
         .catch(err => {
@@ -223,4 +226,22 @@ function getInStockValue() {
         const totalCount = toys.length
         return { inStockCount, totalCount }
     })
+}
+
+function addToyMsg(toyId, msg) {
+    return httpService.post(`${BASE_URL}/${toyId}/msg`, msg)
+        .then(savedMsg => savedMsg)
+        .catch(err => {
+            console.error('Error adding toy message:', err)
+            throw err
+        })
+}
+
+function removeToyMsg(toyId, msgId) {
+    return httpService.delete(`${BASE_URL}/${toyId}/msg/${msgId}`)
+        .then(() => msgId)
+        .catch(err => {
+            console.error('Error removing toy message:', err)
+            throw err
+        })
 }
