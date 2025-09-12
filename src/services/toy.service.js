@@ -27,8 +27,8 @@ export const toyService = {
     getToyLabels,
     getToyLabelCounts,
     getInStockValue,
-    addToyMsg,
-    removeToyMsg
+    addMsg,
+    removeMsg
 }
 
 function query(filterBy = {}, sortBy = {}) {
@@ -228,7 +228,7 @@ function getInStockValue() {
     })
 }
 
-function addToyMsg(toyId, msg) {
+function addMsg(toyId, msg) {
     return httpService.post(`${BASE_URL}/${toyId}/msg`, msg)
         .then(savedMsg => savedMsg)
         .catch(err => {
@@ -237,7 +237,7 @@ function addToyMsg(toyId, msg) {
         })
 }
 
-function removeToyMsg(toyId, msgId) {
+function removeMsg(toyId, msgId) {
     return httpService.delete(`${BASE_URL}/${toyId}/msg/${msgId}`)
         .then(() => msgId)
         .catch(err => {
