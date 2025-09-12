@@ -7,12 +7,11 @@ export function UserMsg() {
 
   useEffect(() => {
     const unsubscribe = eventBus.on('show-user-msg', event => {
-      console.log('UserMsg received:', event.detail) // Debug log
       setMsg(event.detail)
       if (timeoutIdRef.current) {
         clearTimeout(timeoutIdRef.current)
       }
-      timeoutIdRef.current = setTimeout(closeMsg, 5000) // Increased timeout
+      timeoutIdRef.current = setTimeout(closeMsg, 5000)
     })
     return unsubscribe
   }, [])
@@ -22,8 +21,6 @@ export function UserMsg() {
   }
 
   if (!msg) return null
-  
-  console.log('Rendering UserMsg:', msg) // Debug log
   
   return (
     <section className={`user-msg ${msg.type}`} style={{
