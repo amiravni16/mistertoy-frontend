@@ -14,6 +14,7 @@ export function ToyDetails() {
     const [review, setReview] = useState({ txt: '' })
     const [reviews, setReviews] = useState([])
     const [reviewStats, setReviewStats] = useState({ totalReviews: 0, avgRating: 0 })
+    const [isSubmittingReview, setIsSubmittingReview] = useState(false)
     const { toyId } = useParams()
     const navigate = useNavigate()
 
@@ -111,6 +112,7 @@ export function ToyDetails() {
             return
         }
         
+        setIsSubmittingReview(true)
         try {
             const newReview = {
                 txt: review.txt,
@@ -124,6 +126,8 @@ export function ToyDetails() {
             showSuccessMsg('Review saved!')
         } catch (error) {
             showErrorMsg('Cannot save review')
+        } finally {
+            setIsSubmittingReview(false)
         }
     }
 
@@ -218,7 +222,9 @@ export function ToyDetails() {
                                 rows="3"
                                 required
                             />
-                            <button>Submit Review</button>
+                            <button disabled={isSubmittingReview}>
+                                {isSubmittingReview ? 'Submitting...' : 'Submit Review'}
+                            </button>
                         </form>
                         
                         <div>
