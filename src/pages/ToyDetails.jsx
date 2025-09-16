@@ -5,6 +5,7 @@ import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { toyService } from '../services/toy.service'
 import { reviewService } from '../services/review.service'
 import { authService } from '../services/auth.service'
+import '../assets/style/pages/reviews.css'
 
 export function ToyDetails() {
     const user = authService.getLoggedinUser()
@@ -46,10 +47,12 @@ export function ToyDetails() {
 
     async function loadReviews() {
         try {
-            const reviews = await reviewService.getReviewsByToyId(toyId)
-            setReviews(reviews)
+            const reviews = await reviewService.getReviewsWithToysAndUsers({ toyId })
+            // Ensure reviews is an array
+            setReviews(Array.isArray(reviews) ? reviews : [])
         } catch (error) {
             console.error('Error loading reviews:', error)
+            setReviews([]) // Set empty array on error
         }
     }
 
@@ -220,7 +223,7 @@ export function ToyDetails() {
                         
                         <div>
                             <ul className="clean-list">
-                                {reviews.map(review => (
+                                {Array.isArray(reviews) && reviews.map(review => (
                                     <li key={review._id} className="review-item">
                                         <div className="review-content">
                                             <p><strong>{review.user?.fullname || review.user?.username || 'Anonymous'}</strong></p>
@@ -246,7 +249,7 @@ export function ToyDetails() {
                         <p>Please <Link to="/login" className="login-link">login</Link> to write reviews about this toy.</p>
                         <div>
                             <ul className="clean-list">
-                                {reviews.map(review => (
+                                {Array.isArray(reviews) && reviews.map(review => (
                                     <li key={review._id} className="review-item">
                                         <div className="review-content">
                                             <p><strong>{review.user?.fullname || review.user?.username || 'Anonymous'}</strong></p>

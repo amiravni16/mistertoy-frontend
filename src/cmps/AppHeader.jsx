@@ -37,6 +37,7 @@ export function AppHeader() {
                     <nav>
                         <NavLink to="/">home</NavLink> |
                         <NavLink to="/toy">toys</NavLink> |
+                        <NavLink to="/reviews">reviews</NavLink> |
                         <NavLink to="/dashboard">dashboard</NavLink> |
                         <NavLink to="/about">about</NavLink> |
                         {isLoggedIn ? (

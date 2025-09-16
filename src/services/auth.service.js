@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = '/api/auth'
+const BASE_URL = 'auth'
 
 export const authService = {
     login,
