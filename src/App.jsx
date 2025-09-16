@@ -14,6 +14,8 @@ import { ToyDashboard } from './pages/ToyDashboard'
 import { ToyDetails } from './pages/ToyDetails'
 import { ToyEdit } from './pages/ToyEdit'
 import { ToyIndex } from './pages/ToyIndex'
+import { UserDetails } from './pages/UserDetails'
+import { ReviewExplore } from './pages/ReviewExplore'
 import { store } from './store/store'
 
 function App() {
@@ -41,6 +43,8 @@ function App() {
                                 </ProtectedRoute>
                             } path="/toy/edit/:toyId?" />
                             <Route element={<ToyDetails />} path="/toy/:toyId" />
+                            <Route element={<UserDetails />} path="/user/:userId" />
+                            <Route element={<ReviewExplore />} path="/reviews" />
                         </Routes>
                     </main>
                     <AppFooter />
