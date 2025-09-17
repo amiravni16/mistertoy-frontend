@@ -1,6 +1,6 @@
 import Axios from 'axios'
 
-const BASE_URL = 'http://localhost:3030/api/'
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3030/api/'
     
 const axios = Axios.create({
     withCredentials: true,
