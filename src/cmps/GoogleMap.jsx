@@ -9,6 +9,10 @@ import { useEffect, useState } from 'react'
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
 
+// Debug log to check if API key is loaded
+console.log('Google Maps API Key:', API_KEY ? 'Loaded' : 'NOT LOADED')
+console.log('Environment variable:', import.meta.env.VITE_GOOGLE_MAPS_API_KEY)
+
 const branches = [
     {
         city: 'New York',
