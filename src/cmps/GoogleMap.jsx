@@ -7,7 +7,7 @@ import {
 } from '@vis.gl/react-google-maps'
 import { useEffect, useState } from 'react'
 
-const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || 'AIzaSyA5YAKbctMWmj2etXv-KY7MSXDMGaWr0qs'
+const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
 
 const branches = [
     {
