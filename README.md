@@ -2,6 +2,11 @@
 
 A modern React application for managing toy collections with Google Maps integration.
 
+## 🚀 Live Demo
+
+**Frontend:** [https://mistertoy-frontend-hqv8.onrender.com](https://mistertoy-frontend-hqv8.onrender.com)  
+**Backend API:** [https://mistertoy-backend-8pc5.onrender.com](https://mistertoy-backend-8pc5.onrender.com)
+
 ## Environment Setup
 
 ### Required Environment Variables
@@ -28,6 +33,21 @@ VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
 npm install
 npm run dev
 ```
+
+## Deployment
+
+This application is deployed on [Render.com](https://render.com/):
+
+- **Frontend:** Deployed as a Static Site
+- **Backend:** Deployed as a Web Service
+- **Database:** MongoDB Atlas (cloud database)
+
+### Environment Variables for Production
+
+The following environment variables are configured in Render:
+
+- `VITE_API_URL`: Backend API URL
+- `VITE_GOOGLE_MAPS_API_KEY`: Google Maps API key
 
 ## Security Note
 
